@@ -1,23 +1,56 @@
 #include "Game.hpp"
 #include <iostream>
 
+void Game::notify(std::string event, json_t* extras) {
+	if (extras == nullptr) extras = json_object();
+	json_object_set(extras, "event", json_string(event.c_str()));
+	this->p1.notify(extras);
+	this->p2.notify(extras);
+	json_decref(extras);
+}
+
+void Game::onPhaseBegin() {
+	auto [current_player, plr] = this->getCurrentPlayer();
+	if (this->phase == Phase::P1_DRAW) {
+		this->turn++;
+	}
+	if (this->phase == Phase::P1_DRAW || this->phase == Phase::P2_DRAW) {
+		plr.drawCard();
+		this->notify("draw_card", json_pack("{s:s}", "side", current_player == PlayerSide::P1 ? "P1" : "P2"));
+	}
+	if (this->phase == Phase::P1_ADJUST || this->phase == Phase::P2_ADJUST) {
+		for (int i = 0; i < 4; i++) {
+			auto& maybe_card = this->field.findCard(Position{current_player, FieldSegmentEnum::STANDBY, i});
+			if (maybe_card.has_value()) {
+				auto battleCardPtr = std::dynamic_pointer_cast<BattleCard>(*maybe_card);
+				battleCardPtr->unsetE();
+			}
+		}
+	}
+}
+
+std::tuple<PlayerSide, Player&> Game::getCurrentPlayer() {
+	auto current_player = (
+		this->phase == Phase::P1_SHUFFLE ||
+		this->phase == Phase::P1_DRAW ||
+		this->phase == Phase::P1_MOVE ||
+		this->phase == Phase::P1_EVENT ||
+		this->phase == Phase::P1_SET ||
+		this->phase == Phase::P2_BLOCK ||
+		this->phase == Phase::P1_BATTLE ||
+		this->phase == Phase::P1_ADJUST
+	) ? PlayerSide::P1 : PlayerSide::P2;
+	auto& plr = current_player == PlayerSide::P1 ? this->p1 : this->p2;
+	return {current_player, plr};
+}
+
 void Game::run() {
 	this->p1.dealInitialHand();
 	this->p2.dealInitialHand();
 	auto shuffles = 0;
 	while (true) {
 		this->sendState();
-		auto current_player = (
-			this->phase == Phase::P1_SHUFFLE ||
-			this->phase == Phase::P1_DRAW ||
-			this->phase == Phase::P1_MOVE ||
-			this->phase == Phase::P1_EVENT ||
-			this->phase == Phase::P1_SET ||
-			this->phase == Phase::P2_BLOCK ||
-			this->phase == Phase::P1_BATTLE ||
-			this->phase == Phase::P1_ADJUST
-		) ? PlayerSide::P1 : PlayerSide::P2;
-		auto& plr = current_player == PlayerSide::P1 ? this->p1 : this->p2;
+		auto [current_player, plr] = this->getCurrentPlayer();
 		auto instruction = plr.recvInstruction();
 		switch (instruction->getType()) {
 		case InstructionType::SHUFFLE:
@@ -40,9 +73,8 @@ void Game::run() {
 					if (this->phase == Phase::P2_SHUFFLE) {
 						shuffles = 0;
 					}
-					if (this->phase == Phase::P1_DRAW) {
-						this->turn++;
-					}
+					this->onPhaseBegin();
+					break;
 				} else {
 					plr.sendError("You cannot set that phase right now");
 				}
@@ -117,6 +149,8 @@ void Game::run() {
 			plr.sendError("Unrecognized instruction type in run_game");
 			break;
 		}
+		// Shouldn't put any code here because if the given instruction was set_phase, and it switched to another current_player,
+		// the variables plr and current_player haven't been updated yet
 	}
 }
 
@@ -131,7 +165,7 @@ SerializedGame Game::serializeForPlayer(PlayerSide player) {
 	auto& plr = player == PlayerSide::P1 ? this->p1 : this->p2;
 	auto& enemy = player == PlayerSide::P1 ? this->p2 : this->p1;
 	return SerializedGame{
-		player == PlayerSide::P1 ? "P1" : "P2",
+		playerSideToString(player),
 		this->turn,
 		phaseToString(this->phase),
 		this->field.serialize(),

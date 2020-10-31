@@ -17,6 +17,11 @@ void Player::sendError(std::string what) {
 	this->conn.sendError(what);
 }
 
+void Player::notify(json_t* object) {
+	this->conn.notify(object);
+}
+
+
 void Player::dealInitialHand() {
 	this->deck.insert(this->deck.end(), this->hand.begin(), this->hand.end());
 	this->hand.clear();
@@ -30,4 +35,10 @@ void Player::dealInitialHand() {
 void Player::sendState(SerializedGame game) {
 	this->conn.sendGame(game);
 }
+
+void Player::drawCard() {
+	this->hand.push_back(this->deck.back());
+	this->deck.pop_back();
+}
+
 

@@ -22,6 +22,9 @@ public:
 	void run();
 
 private:
+	std::tuple<PlayerSide, Player&> getCurrentPlayer();
+	void onPhaseBegin();
+	void notify(std::string event, json_t* extras);
 	void sendState();
 	SerializedGame serializeForPlayer(PlayerSide player);
 

@@ -13,6 +13,7 @@ public:
 	std::optional<std::shared_ptr<Card>>& findCard(int index);
 	json_t* serialize();
 };
+
 class FieldSegment {
 	std::array<std::optional<std::shared_ptr<Card>>, 4> cards;
 public:

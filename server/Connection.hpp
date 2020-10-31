@@ -15,5 +15,6 @@ public:
 
 	std::unique_ptr<Instruction> readInstruction();
 	void sendError(std::string what);
+	void notify(json_t* what);
 	void sendGame(SerializedGame game);
 };

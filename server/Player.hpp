@@ -35,7 +35,9 @@ public:
 
 	std::unique_ptr<Instruction> recvInstruction();
 	void sendError(std::string what);
+	void notify(json_t* object);
 
 	void dealInitialHand();
 	void sendState(SerializedGame game);
+	void drawCard();
 };

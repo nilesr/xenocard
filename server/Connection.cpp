@@ -41,6 +41,11 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 		if (position == nullptr || !json_is_object(position)) throw std::logic_error("Required key position wasn't found or wasn't an object");
 		return std::make_unique<PlayInstruction>(*hand_index, positionFromJson(position));
 	}
+	if (meth == "discard") {
+		auto hand_index = getInt(json, "hand_index");
+		if (!hand_index.has_value()) throw std::logic_error("Required key hand_index wasn't found (or wasn't an integer)");
+		return std::make_unique<DiscardInstruction>(*hand_index);
+	}
 
 	throw std::logic_error("Unknown method");
 }
@@ -55,6 +60,14 @@ void Connection::sendError(std::string what) {
 	std::cout << "Wrote " << written << " bytes back to the client" << std::endl;
 	free(stringified);
 	json_decref(obj);
+}
+
+void Connection::notify(json_t* what) {
+	char* stringified = json_dumps(what, 0);
+	int written = write(this->fd, stringified, strlen(stringified));
+	write(this->fd, "\n", 1);
+	std::cout << "Wrote " << written << " bytes back to the client" << std::endl;
+	free(stringified);
 }
 
 void Connection::sendGame(SerializedGame game) {

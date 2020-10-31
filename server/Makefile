@@ -30,14 +30,14 @@ Connection.cpp: vendor/jansson/include
 server: $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
-depend: .depend
+#depend: .depend
 
 .depend: $(SRCS)
 	$(RM) ./.depend
 	$(CXX) $(CPPFLAGS) -MM $^>>./.depend;
 
 clean:
-	rm -f *.o cards/*.o server
+	rm -f .depend *.o cards/*.o server
 
 distclean: clean
 	rm -rf vendor

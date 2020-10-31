@@ -8,6 +8,7 @@ enum class InstructionType {
 	PLAY,
 	MOVE,
 	USE_CARD_EFFECT,
+	DISCARD,
 };
 
 struct Instruction {
@@ -32,4 +33,12 @@ struct PlayInstruction: public Instruction {
 	int handIndex;
 	Position position;
 };
+
+struct DiscardInstruction: public Instruction {
+	InstructionType getType() override { return InstructionType::DISCARD; };
+
+	DiscardInstruction(int handIndex): handIndex(handIndex) {};
+	int handIndex;
+};
+
 
