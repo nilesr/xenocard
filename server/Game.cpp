@@ -16,7 +16,7 @@ void Game::onPhaseBegin() {
 	}
 	if (this->phase == Phase::P1_DRAW || this->phase == Phase::P2_DRAW) {
 		plr.drawCard();
-		this->notify("draw_card", json_pack("{s:s}", "side", current_player == PlayerSide::P1 ? "P1" : "P2"));
+		this->notify("draw_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
 	}
 	if (this->phase == Phase::P1_ADJUST || this->phase == Phase::P2_ADJUST) {
 		for (int i = 0; i < 4; i++) {
@@ -65,6 +65,10 @@ void Game::run() {
 			break;
 		case InstructionType::SET_PHASE:
 			{
+				if ((this->phase == Phase::P1_ADJUST || this->phase == Phase::P2_ADJUST) && plr.hand.size() > 6) {
+					plr.sendError("You must discard cards until your hand is of size 6 before you can end the current phase");
+					break;
+				}
 				auto spi = dynamic_cast<SetPhaseInstruction*>(instruction.get());
 				std::cout << "Would-be new phase: " << (int)spi->newPhase << std::endl;
 				if (spi->newPhase == nextPhase(this->phase)) {
@@ -77,6 +81,7 @@ void Game::run() {
 					break;
 				} else {
 					plr.sendError("You cannot set that phase right now");
+					break;
 				}
 			}
 			break;
@@ -143,6 +148,26 @@ void Game::run() {
 					to_play_battle->setE();
 					break;
 				}
+			}
+			break;
+		case InstructionType::DISCARD:
+			{
+				if (this->phase != Phase::P1_ADJUST && this->phase != Phase::P2_ADJUST) {
+					plr.sendError("You must be in the adjust phase to discard a card");
+					break;
+				}
+				if (plr.hand.size() <= 6) {
+					plr.sendError("You may only discard a card if you have >6 cards in your hand");
+					break;
+				}
+				auto di = dynamic_cast<DiscardInstruction*>(instruction.get());
+				if (di->handIndex < 0 || di->handIndex >= 6) {
+					plr.sendError("I couldn't find a card at that index in your hand");
+					break;
+				}
+				plr.junk.push_back(plr.hand.at(di->handIndex));
+				plr.hand.erase(plr.hand.begin() + di->handIndex);
+				this->notify("discard_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
 			}
 			break;
 		default:

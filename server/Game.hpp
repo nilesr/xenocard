@@ -6,7 +6,7 @@
 #include "SerializedGame.hpp"
 
 class Game {
-	int turn{-1};
+	int turn{0};
 	Phase phase;
 
 	Player p1;
