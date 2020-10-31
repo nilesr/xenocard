@@ -39,7 +39,7 @@ void Game::onPhaseBegin() {
 		plr.drawCard();
 		this->notify("draw_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
 	}
-	if (this->phase == Phase::P1_ADJUST || this->phase == Phase::P2_ADJUST) {
+	if (this->phase == Phase::P1_BATTLE || this->phase == Phase::P2_BATTLE) {
 		for (int i = 0; i < 4; i++) {
 			auto& maybe_card = this->field.findCard(Position{current_player, FieldSegmentEnum::STANDBY, i});
 			if (maybe_card.has_value()) {
@@ -48,6 +48,12 @@ void Game::onPhaseBegin() {
 			}
 		}
 	}
+}
+
+void Game::payCost(int n) {
+	auto [current_player, plr] = this->getCurrentPlayer();
+	plr.payCost(n);
+	this->notify("pay_cost", json_pack("{s:s, s:i}", "side", playerSideToString(current_player).c_str(), "n", n));
 }
 
 std::tuple<PlayerSide, Player&> Game::getCurrentPlayer() {
@@ -69,6 +75,8 @@ void Game::run() {
 	this->p1.dealInitialHand();
 	this->p2.dealInitialHand();
 	auto shuffles = 0;
+	bool has_played_battle_card = false;
+	bool has_played_situation_card = false;
 	while (true) {
 		this->sendState();
 		auto [current_player, plr] = this->getCurrentPlayer();
@@ -108,10 +116,6 @@ void Game::run() {
 			break;
 		case InstructionType::PLAY:
 			{
-				if (this->phase != Phase::P1_SET && this->phase != Phase::P2_SET) {
-					plr.sendError("Can only play cards during the set phase");
-					break;
-				}
 				auto pi = dynamic_cast<PlayInstruction*>(instruction.get());
 				if (pi->handIndex < 0 || pi->handIndex >= plr.hand.size()) {
 					plr.sendError("Card at that index couldn't be found in your hand");
@@ -141,6 +145,10 @@ void Game::run() {
 				auto& target_slot = this->field.findCard(pi->position);
 				if (to_play->getType() == CardType::BATTLE_WEAPON) {
 					auto to_play_weapon = std::dynamic_pointer_cast<WeaponCard>(to_play);
+					if (this->phase != Phase::P1_SET && this->phase != Phase::P2_SET && this->phase != Phase::P1_MOVE && this->phase != Phase::P2_MOVE) {
+						plr.sendError("Can only play cards battle during the set or move phases");
+						break;
+					}
 					if (!this->checkRequirements(to_play_weapon->getRequirements())) {
 						plr.sendError("You don't meet the requirements to play this card now.");
 						break;
@@ -158,10 +166,16 @@ void Game::run() {
 					}
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_card->weapon = to_play_weapon;
+					this->payCost(target_card->getCost());
 					break;
 				}
 				if (to_play->getType() == CardType::BATTLE) {
+					if (this->phase != Phase::P1_SET && this->phase != Phase::P2_SET) {
+						plr.sendError("Can only play battle cards during the set phase");
+						break;
+					}
 					auto to_play_battle = std::dynamic_pointer_cast<BattleCard>(to_play);
+					// TODO handle gnosis
 					if (target_slot.has_value()) {
 						plr.sendError("Can't place a battle card on top of another card. Move it out of the way first");
 						break;
@@ -173,6 +187,26 @@ void Game::run() {
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
 					to_play_battle->setE();
+					this->payCost(to_play->getCost());
+					break;
+				}
+				if (to_play->getType() == CardType::SITUATION) {
+					if (this->phase != Phase::P1_SET && this->phase != Phase::P2_SET) {
+						plr.sendError("Can only play situation cards during the set phase");
+						break;
+					}
+					auto to_play_situation = std::dynamic_pointer_cast<SituationCard>(to_play);
+					if (target_slot.has_value()) {
+						plr.sendError("Can't place a situation card on top of another card. Move it out of the way first");
+						break;
+					}
+					if (!this->checkRequirements(to_play_situation->getRequirements())) {
+						plr.sendError("You don't meet the requirements to play this card now.");
+						break;
+					}
+					plr.hand.erase(plr.hand.begin() + pi->handIndex);
+					target_slot = to_play;
+					this->payCost(to_play->getCost());
 					break;
 				}
 			}

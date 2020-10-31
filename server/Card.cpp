@@ -29,6 +29,18 @@ std::string battleCardTypeToString(BattleCardType battleCardType) {
 	throw std::logic_error{"should never get here"};
 }
 
+std::string attackPatternToString(AttackPattern attackPattern) {
+	switch (attackPattern) {
+		case AttackPattern::HAND: return "HAND";
+		case AttackPattern::BALLISTIC: return "BALLISTIC";
+		case AttackPattern::SPREAD: return "SPREAD";
+		case AttackPattern::HOMING: return "HOMING";
+		case AttackPattern::PENETRATING: return "PENETRATING";
+	}
+	throw std::logic_error{"should never get here"};
+}
+
+
 
 json_t* Card::serialize() {
 	json_t* r = json_object();
@@ -47,7 +59,7 @@ void Card::serialize(json_t* obj) {
 void BattleCard::serialize(json_t* obj) {
 	this->Card::serialize(obj);
 	json_object_set(obj, "battle_type", json_string(battleCardTypeToString(this->getBattleType()).c_str()));
-	json_object_set(obj, "attack_pattern", json_string(this->getAttackPattern() == AttackPattern::HAND ? "HAND" : "BALLISTIC"));
+	json_object_set(obj, "attack_pattern", json_string(attackPatternToString(this->getAttackPattern()).c_str()));
 	json_object_set(obj, "max_health", json_integer(this->max_health));
 	json_object_set(obj, "health", json_integer(this->health));
 	json_object_set(obj, "e", json_boolean(this->e));

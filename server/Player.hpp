@@ -40,4 +40,5 @@ public:
 	void dealInitialHand();
 	void sendState(SerializedGame game);
 	void drawCard();
+	void payCost(int i);
 };

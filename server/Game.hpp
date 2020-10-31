@@ -27,6 +27,7 @@ private:
 	void onPhaseBegin();
 	void notify(std::string event, json_t* extras);
 	void sendState();
+	void payCost(int n);
 	SerializedGame serializeForPlayer(PlayerSide player);
 
 };

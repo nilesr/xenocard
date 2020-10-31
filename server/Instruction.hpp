@@ -42,3 +42,11 @@ struct DiscardInstruction: public Instruction {
 };
 
 
+struct MoveInstruction: public Instruction {
+	InstructionType getType() override { return InstructionType::MOVE; };
+
+	MoveInstruction(Position start, Position end): start(start), end(end) {};
+	Position start;
+	Position end;
+};
+

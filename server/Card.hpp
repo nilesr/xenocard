@@ -27,8 +27,12 @@ std::string battleCardTypeToString(BattleCardType battleCardType);
 enum class AttackPattern {
 	HAND,
 	BALLISTIC,
+	SPREAD,
+	HOMING,
+	PENETRATING,
 };
 
+std::string attackPatternToString(AttackPattern attackPattern);
 
 using CardRequirements = std::map<std::optional<BattleCardType>, int>;
 
@@ -37,6 +41,7 @@ public:
 	virtual std::string getName() = 0;
 	virtual CardType getType() = 0;
 	virtual CardRequirements getRequirements() = 0;
+	virtual int getCost() { return 0; };
 	virtual ~Card() {};
 	json_t* serialize();
 protected:
@@ -64,6 +69,7 @@ public:
 	virtual void setE() { this->e = 1; };
 	virtual void unsetE() { this->e = 0; };
 	virtual bool getE() { return this->e; };
+	virtual bool countsTowardsLimit() { return this->getBattleType() != BattleCardType::REALIAN; };
 protected:
 	int e = 0;
 	virtual AttackPattern getDefaultAttackPattern() = 0;
@@ -78,6 +84,12 @@ protected:
 class EventCard: public Card {
 	CardType getType() override {
 		return CardType::EVENT;
+	};
+};
+
+class SituationCard: public Card {
+	CardType getType() override {
+		return CardType::SITUATION;
 	};
 };
 

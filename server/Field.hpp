@@ -34,8 +34,7 @@ class PlayerIterator {
 	PlayerField& pf;
 	FieldSegmentEnum fs;
 	int index;
-	PlayerIterator(PlayerField& pf, FieldSegmentEnum fs, int index): pf(pf), fs(fs), index(index) {
-	};
+	PlayerIterator(PlayerField& pf, FieldSegmentEnum fs, int index): pf(pf), fs(fs), index(index) {};
 public:
 	PlayerIterator(PlayerField& pf): pf(pf), fs(FieldSegmentEnum::STANDBY), index(-1) {
 		++(*this);

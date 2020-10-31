@@ -46,6 +46,13 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 		if (!hand_index.has_value()) throw std::logic_error("Required key hand_index wasn't found (or wasn't an integer)");
 		return std::make_unique<DiscardInstruction>(*hand_index);
 	}
+	if (meth == "move") {
+		auto start = json_object_get(json, "start");
+		if (start == nullptr || !json_is_object(start)) throw std::logic_error("Required key 'start' wasn't found or wasn't an object");
+		auto end = json_object_get(json, "end");
+		if (end == nullptr || !json_is_object(end)) throw std::logic_error("Required key 'end' wasn't found or wasn't an object");
+		return std::make_unique<MoveInstruction>(positionFromJson(start), positionFromJson(end));
+	}
 
 	throw std::logic_error("Unknown method");
 }
