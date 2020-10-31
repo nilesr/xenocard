@@ -24,6 +24,8 @@ void Game::run() {
 					if ((this->phase == Phase::P1_SHUFFLE || this->phase == Phase::P2_SHUFFLE) && shuffles < 3) {
 						plr.dealInitialHand();
 						shuffles++;
+					} else {
+						plr.sendError("You may not shuffle at this time, either it is not that phase, or you have already shuffled 3 times");
 					}
 				}
 				break;
@@ -46,7 +48,7 @@ void Game::run() {
 				}
 				break;
 			default:
-				plr.sendError("Unrecognized instruction format");
+				plr.sendError("Unrecognized instruction type in run_game");
 				break;
 		}
 	}
