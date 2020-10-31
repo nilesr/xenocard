@@ -1,0 +1,4 @@
+server/.depend
+server/vendor
+server/*.o
+server/server

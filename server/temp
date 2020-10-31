@@ -1,0 +1,4 @@
+player to server:
+	set phase(new phase)
+	swap(slot, slot)
+	play(hand index, slot)
