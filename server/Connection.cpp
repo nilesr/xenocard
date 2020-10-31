@@ -5,25 +5,7 @@
 #include <cstring>
 #include <string>
 #include <iostream>
-
-std::optional<std::string> getString(json_t* json, const char* key) {
-	json_t* obj = json_object_get(json, key);
-	if (!obj) return std::nullopt;
-	auto charp = json_string_value(obj);
-	if (!charp) return std::nullopt;
-	auto str = std::string{charp};
-	json_decref(obj);
-	return str;
-}
-
-class defer_decref {
-	json_t* json;
-public:
-	defer_decref(json_t* json): json(json) {};
-	~defer_decref() {
-		json_decref(json);
-	}
-};
+#include "Json.hpp"
 
 std::unique_ptr<Instruction> Connection::readInstruction() {
 	unsigned long i = 0;
@@ -42,7 +24,7 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 	if (meth == "set_phase") {
 		auto next_phase = getString(json, "phase");
 		if (!next_phase.has_value()) {
-			throw std::logic_error("Required key phase wasn't found");
+			throw std::logic_error("Required key phase wasn't found (or wasn't a string)");
 		}
 		auto phase = phaseFromString(*next_phase);
 		return std::make_unique<SetPhaseInstruction>(
@@ -51,6 +33,13 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 	}
 	if (meth == "shuffle") {
 		return std::make_unique<ShuffleInstruction>();
+	}
+	if (meth == "play") {
+		auto hand_index = getInt(json, "hand_index");
+		if (!hand_index.has_value()) throw std::logic_error("Required key hand_index wasn't found (or wasn't an integer)");
+		auto position = json_object_get(json, "position");
+		if (position == nullptr || !json_is_object(position)) throw std::logic_error("Required key position wasn't found or wasn't an object");
+		return std::make_unique<PlayInstruction>(*hand_index, positionFromJson(position));
 	}
 
 	throw std::logic_error("Unknown method");

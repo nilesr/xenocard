@@ -60,12 +60,15 @@ public:
 	virtual BattleCardType getBattleType() = 0;
 	// TODO: getAttack
 	AttackPattern getAttackPattern();
+	std::optional<std::shared_ptr<WeaponCard>> weapon;
+	virtual void setE() { this->e = 1; };
+	virtual void unsetE() { this->e = 0; };
 protected:
+	int e = 0;
 	virtual AttackPattern getDefaultAttackPattern() = 0;
 
 	virtual void serialize(json_t* obj) override;
 
-	std::optional<std::shared_ptr<WeaponCard>> weapon;
 	int max_health;
 	int health;
 };

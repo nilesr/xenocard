@@ -2,12 +2,7 @@
 #include "Card.hpp"
 #include "Player.hpp"
 #include <jansson.h>
-
-enum class FieldSegment {
-	BATTLEFIELD,
-	STANDBY,
-	SITUATION,
-};
+#include "Position.hpp"
 
 class Field {
 private:
@@ -38,7 +33,7 @@ private:
 	std::optional<std::shared_ptr<Card>> P2_SITUATION_4;
 
 public:
-	std::optional<std::shared_ptr<Card>>& findCard(PlayerSide side, FieldSegment segment, int index);
+	std::optional<std::shared_ptr<Card>>& findCard(Position pos);
 
 	json_t* serialize();
 

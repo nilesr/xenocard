@@ -1,4 +1,5 @@
 #include "Field.hpp"
+#include <stdexcept>
 
 json_t* Field::serialize() {
 	auto obj = json_object();
@@ -54,3 +55,60 @@ json_t* Field::serialize() {
 	json_object_set(obj, "p2", p2);
 	return obj;
 }
+
+std::optional<std::shared_ptr<Card>>& Field::findCard(Position pos) {
+	switch (pos.playerSide) {
+	case PlayerSide::P1:
+		switch (pos.segment) {
+		case FieldSegment::BATTLEFIELD:
+			switch (pos.index) {
+			case 0: return this->P1_BATTLEFIELD_TOP_LEFT;
+			case 1: return this->P1_BATTLEFIELD_TOP_RIGHT;
+			case 2: return this->P1_BATTLEFIELD_BOTTOM_LEFT;
+			case 3: return this->P1_BATTLEFIELD_BOTTOM_RIGHT;
+			}
+		case FieldSegment::STANDBY:
+			switch (pos.index) {
+			case 0: return this->P1_STANDBY_1;
+			case 1: return this->P1_STANDBY_2;
+			case 2: return this->P1_STANDBY_3;
+			case 3: return this->P1_STANDBY_4;
+			}
+		case FieldSegment::SITUATION:
+			switch (pos.index) {
+			case 0: return this->P1_SITUATION_1;
+			case 1: return this->P1_SITUATION_2;
+			case 2: return this->P1_SITUATION_3;
+			case 3: return this->P1_SITUATION_4;
+			}
+		}
+		break;
+	case PlayerSide::P2:
+		switch (pos.segment) {
+		case FieldSegment::BATTLEFIELD:
+			switch (pos.index) {
+			case 0: return this->P2_BATTLEFIELD_TOP_LEFT;
+			case 1: return this->P2_BATTLEFIELD_TOP_RIGHT;
+			case 2: return this->P2_BATTLEFIELD_BOTTOM_LEFT;
+			case 3: return this->P2_BATTLEFIELD_BOTTOM_RIGHT;
+			}
+		case FieldSegment::STANDBY:
+			switch (pos.index) {
+			case 0: return this->P2_STANDBY_1;
+			case 1: return this->P2_STANDBY_2;
+			case 2: return this->P2_STANDBY_3;
+			case 3: return this->P2_STANDBY_4;
+			}
+		case FieldSegment::SITUATION:
+			switch (pos.index) {
+			case 0: return this->P2_SITUATION_1;
+			case 1: return this->P2_SITUATION_2;
+			case 2: return this->P2_SITUATION_3;
+			case 3: return this->P2_SITUATION_4;
+			}
+		}
+		break;
+	}
+	throw std::logic_error{"should never get here"};
+}
+

@@ -3,6 +3,7 @@
 #include "Instruction.hpp"
 #include "Card.hpp"
 #include "Random.hpp"
+#include "PlayerSide.hpp"
 #include <memory>
 #include <vector>
 
@@ -11,11 +12,6 @@
 #include "cards/Human.hpp"
 #include "cards/Mech.hpp"
 #include "cards/Curry.hpp"
-
-enum class PlayerSide {
-	P1,
-	P2,
-};
 
 class Player {
 	const PlayerSide which;

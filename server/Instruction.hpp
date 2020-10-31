@@ -1,5 +1,6 @@
 #pragma once
 #include "Phase.hpp"
+#include "Position.hpp"
 
 enum class InstructionType {
 	SHUFFLE,
@@ -24,4 +25,11 @@ struct ShuffleInstruction: public Instruction {
 	InstructionType getType() override { return InstructionType::SHUFFLE; };
 };
 
+struct PlayInstruction: public Instruction {
+	InstructionType getType() override { return InstructionType::PLAY; };
+
+	PlayInstruction(int handIndex, Position position): handIndex(handIndex), position(position) {};
+	int handIndex;
+	Position position;
+};
 
