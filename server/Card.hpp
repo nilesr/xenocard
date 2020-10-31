@@ -30,7 +30,7 @@ enum class AttackPattern {
 };
 
 
-using CardRequirements = std::map<BattleCardType, int>;
+using CardRequirements = std::map<std::optional<BattleCardType>, int>;
 
 class Card {
 public:
@@ -63,6 +63,7 @@ public:
 	std::optional<std::shared_ptr<WeaponCard>> weapon;
 	virtual void setE() { this->e = 1; };
 	virtual void unsetE() { this->e = 0; };
+	virtual bool getE() { return this->e; };
 protected:
 	int e = 0;
 	virtual AttackPattern getDefaultAttackPattern() = 0;

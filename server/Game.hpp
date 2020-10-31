@@ -23,6 +23,7 @@ public:
 
 private:
 	std::tuple<PlayerSide, Player&> getCurrentPlayer();
+	bool checkRequirements(CardRequirements reqs);
 	void onPhaseBegin();
 	void notify(std::string event, json_t* extras);
 	void sendState();

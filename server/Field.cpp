@@ -1,5 +1,6 @@
 #include "Field.hpp"
 #include <stdexcept>
+#include <iostream> // for debug
 
 json_t* Battlefield::serialize() {
 	return json_pack("[o?o?o?o?]",
@@ -73,5 +74,47 @@ std::optional<std::shared_ptr<Card>>& Field::findCard(Position pos) {
 	} else {
 		return this->p2.findCard(pos.segment, pos.index);
 	}
+}
+
+PlayerIterator Field::iterateForPlayer(PlayerSide player) {
+	return player == PlayerSide::P1
+		? PlayerIterator{this->p1}
+		: PlayerIterator{this->p2};
+}
+
+
+bool PlayerIterator::operator!=(PlayerIterator& other) {
+	return other.fs != this->fs && other.index != this->index;
+}
+
+PlayerIterator PlayerIterator::begin() {
+	return *this;
+}
+
+PlayerIterator PlayerIterator::end() {
+	return PlayerIterator{this->pf, FieldSegmentEnum::SITUATION, 4}; 
+}
+
+PlayerIterator& PlayerIterator::operator++() {
+	do {
+		this->index++;
+		if (this->index == 4) {
+			if (this->fs == FieldSegmentEnum::SITUATION) {
+				// we are == .end() now, nothing left to find
+				return *this;
+			} else if (this->fs == FieldSegmentEnum::STANDBY) {
+				this->fs = FieldSegmentEnum::BATTLEFIELD;
+				this->index = 0;
+			} else if (this->fs == FieldSegmentEnum::BATTLEFIELD) {
+				this->fs = FieldSegmentEnum::SITUATION;
+				this->index = 0;
+			}
+		}
+	} while (!this->pf.findCard(this->fs, this->index).has_value());
+	return *this;
+}
+
+std::shared_ptr<Card> PlayerIterator::operator*() {
+	return *this->pf.findCard(this->fs, this->index);
 }
 

@@ -30,6 +30,23 @@ public:
 	json_t* serialize();
 };
 
+class PlayerIterator {
+	PlayerField& pf;
+	FieldSegmentEnum fs;
+	int index;
+	PlayerIterator(PlayerField& pf, FieldSegmentEnum fs, int index): pf(pf), fs(fs), index(index) {
+	};
+public:
+	PlayerIterator(PlayerField& pf): pf(pf), fs(FieldSegmentEnum::STANDBY), index(-1) {
+		++(*this);
+	};
+	PlayerIterator begin();
+	PlayerIterator end();
+	PlayerIterator& operator++();
+	bool operator!=(PlayerIterator& other);
+	std::shared_ptr<Card> operator*();
+};
+
 class Field {
 private:
 	PlayerField p1;
@@ -40,4 +57,6 @@ public:
 
 	json_t* serialize();
 
+	PlayerIterator iterateForPlayer(PlayerSide player);
 };
+

@@ -3,8 +3,8 @@
 #include <jansson.h>
 
 enum class FieldSegmentEnum {
-	BATTLEFIELD,
 	STANDBY,
+	BATTLEFIELD,
 	SITUATION,
 };
 

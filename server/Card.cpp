@@ -40,7 +40,8 @@ void Card::serialize(json_t* obj) {
 	json_object_set(obj, "name", json_string(this->getName().c_str()));
 	json_object_set(obj, "type", json_string(cardTypeToString(this->getType()).c_str()));
 	json_t* (*int_to_json_int)(int) = [](int a){return json_integer((int) a);};
-	json_object_set(obj, "requirements", map_to_obj(this->getRequirements(), battleCardTypeToString, int_to_json_int));
+	std::string (*optional_battle_card_type_to_string)(std::optional<BattleCardType>) = [](std::optional<BattleCardType> a){return a.has_value() ? battleCardTypeToString(*a) : "null";};
+	json_object_set(obj, "requirements", map_to_obj(this->getRequirements(), optional_battle_card_type_to_string, int_to_json_int));
 }
 
 void BattleCard::serialize(json_t* obj) {

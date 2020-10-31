@@ -9,6 +9,28 @@ void Game::notify(std::string event, json_t* extras) {
 	json_decref(extras);
 }
 
+bool Game::checkRequirements(CardRequirements reqs) {
+	auto [current_player, plr] = this->getCurrentPlayer();
+	for (const auto card : this->field.iterateForPlayer(current_player)) {
+		std::cout << "Found a card:" << std::endl;
+		std::cout << json_dumps(card->serialize(), 0) << std::endl;
+		if (card->getType() != CardType::BATTLE) continue;
+		auto battle_card = std::dynamic_pointer_cast<BattleCard>(card);
+		const auto type = battle_card->getBattleType();
+		// reqs[type] will insert the value as 0 if it doesn't exist
+		if (reqs[type] > 0) {
+			--reqs[type];
+		} else {
+			--reqs[std::nullopt];
+		}
+	}
+	for (const auto& [k, v] : reqs) {
+		if (v > 0) return false;
+	}
+	return true;
+}
+
+
 void Game::onPhaseBegin() {
 	auto [current_player, plr] = this->getCurrentPlayer();
 	if (this->phase == Phase::P1_DRAW) {
@@ -120,7 +142,10 @@ void Game::run() {
 				auto& target_slot = this->field.findCard(pi->position);
 				if (to_play->getType() == CardType::BATTLE_WEAPON) {
 					auto to_play_weapon = std::dynamic_pointer_cast<WeaponCard>(to_play);
-					// TODO CHECK REQUIREMENTS
+					if (!this->checkRequirements(to_play_weapon->getRequirements())) {
+						plr.sendError("You don't meet the requirements to play this card now.");
+						break;
+					}
 					if (!target_slot.has_value() || (*target_slot)->getType() != CardType::BATTLE) {
 						plr.sendError("Weapon cards must be played on top of a battle card");
 						break;
@@ -142,7 +167,10 @@ void Game::run() {
 						plr.sendError("Can't place a battle card on top of another card. Move it out of the way first");
 						break;
 					}
-					// TODO CHECK REQUIREMENTS
+					if (!this->checkRequirements(to_play_battle->getRequirements())) {
+						plr.sendError("You don't meet the requirements to play this card now.");
+						break;
+					}
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
 					to_play_battle->setE();
