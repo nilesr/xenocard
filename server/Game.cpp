@@ -7,7 +7,7 @@ void Game::run() {
 	auto shuffles = 0;
 	while (true) {
 		this->sendState();
-		auto& plr = (
+		auto current_player = (
 			this->phase == Phase::P1_SHUFFLE ||
 			this->phase == Phase::P1_DRAW ||
 			this->phase == Phase::P1_MOVE ||
@@ -16,7 +16,8 @@ void Game::run() {
 			this->phase == Phase::P2_BLOCK ||
 			this->phase == Phase::P1_BATTLE ||
 			this->phase == Phase::P1_ADJUST
-		) ? this->p1 : this->p2;
+		) ? PlayerSide::P1 : PlayerSide::P2;
+		auto& plr = current_player == PlayerSide::P1 ? this->p1 : this->p2;
 		auto instruction = plr.recvInstruction();
 		switch (instruction->getType()) {
 		case InstructionType::SHUFFLE:
@@ -58,6 +59,10 @@ void Game::run() {
 					plr.sendError("Card at that index couldn't be found in your hand");
 					break;
 				}
+				if (current_player != pi->position.playerSide) {
+					plr.sendError("Cards must be placed on your side of the board");
+					break;
+				}
 				auto to_play = plr.hand.at(pi->handIndex);
 				if (to_play->getType() == CardType::EVENT) {
 					plr.sendError("You can't play event cards onto the field, call use_card_effect instead");
@@ -75,7 +80,7 @@ void Game::run() {
 					plr.sendError("Weapon cards must be played into the standby or battlefield field segments");
 					break;
 				}
-				auto target_slot = this->field.findCard(pi->position);
+				auto& target_slot = this->field.findCard(pi->position);
 				if (to_play->getType() == CardType::BATTLE_WEAPON) {
 					auto to_play_weapon = std::dynamic_pointer_cast<WeaponCard>(to_play);
 					// TODO CHECK REQUIREMENTS
@@ -95,7 +100,7 @@ void Game::run() {
 					break;
 				}
 				if (to_play->getType() == CardType::BATTLE) {
-					auto to_play_battle = std::dynamic_pointer_cast<WeaponCard>(to_play);
+					auto to_play_battle = std::dynamic_pointer_cast<BattleCard>(to_play);
 					if (target_slot.has_value()) {
 						plr.sendError("Can't place a battle card on top of another card. Move it out of the way first");
 						break;
@@ -103,6 +108,7 @@ void Game::run() {
 					// TODO CHECK REQUIREMENTS
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
+					to_play_battle->setE();
 					break;
 				}
 			}
