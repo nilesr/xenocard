@@ -240,7 +240,6 @@ void Game::run() {
 					plr.sendError("I couldn't find a card at that index in your hand");
 					break;
 				}
-				// TODO do these cards go to junk or lost?
 				plr.junk.push_back(plr.hand.at(di->handIndex));
 				plr.hand.erase(plr.hand.begin() + di->handIndex);
 				this->notify("discard_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
