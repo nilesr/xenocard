@@ -106,6 +106,8 @@ void Game::run() {
 					if (this->phase == Phase::P2_SHUFFLE) {
 						shuffles = 0;
 					}
+					has_played_battle_card = false;
+					has_played_situation_card = false;
 					this->onPhaseBegin();
 					break;
 				} else {
@@ -146,7 +148,7 @@ void Game::run() {
 				if (to_play->getType() == CardType::BATTLE_WEAPON) {
 					auto to_play_weapon = std::dynamic_pointer_cast<WeaponCard>(to_play);
 					if (this->phase != Phase::P1_SET && this->phase != Phase::P2_SET && this->phase != Phase::P1_MOVE && this->phase != Phase::P2_MOVE) {
-						plr.sendError("Can only play cards battle during the set or move phases");
+						plr.sendError("Can only play weapon cards during the set or move phases");
 						break;
 					}
 					if (!this->checkRequirements(to_play_weapon->getRequirements())) {
@@ -175,6 +177,10 @@ void Game::run() {
 						break;
 					}
 					auto to_play_battle = std::dynamic_pointer_cast<BattleCard>(to_play);
+					if (to_play_battle->countsTowardsLimit() && has_played_battle_card) {
+						plr.sendError("You already played a battle card this turn.");
+						break;
+					}
 					// TODO handle gnosis
 					if (target_slot.has_value()) {
 						plr.sendError("Can't place a battle card on top of another card. Move it out of the way first");
@@ -187,6 +193,9 @@ void Game::run() {
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
 					to_play_battle->setE();
+					if (to_play_battle->countsTowardsLimit()) {
+						has_played_battle_card = true;
+					}
 					this->payCost(to_play->getCost());
 					break;
 				}
@@ -196,6 +205,10 @@ void Game::run() {
 						break;
 					}
 					auto to_play_situation = std::dynamic_pointer_cast<SituationCard>(to_play);
+					if (has_played_situation_card) {
+						plr.sendError("You already played a situation card this turn.");
+						break;
+					}
 					if (target_slot.has_value()) {
 						plr.sendError("Can't place a situation card on top of another card. Move it out of the way first");
 						break;
@@ -206,6 +219,7 @@ void Game::run() {
 					}
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
+					has_played_situation_card = true;
 					this->payCost(to_play->getCost());
 					break;
 				}
@@ -226,6 +240,7 @@ void Game::run() {
 					plr.sendError("I couldn't find a card at that index in your hand");
 					break;
 				}
+				// TODO do these cards go to junk or lost?
 				plr.junk.push_back(plr.hand.at(di->handIndex));
 				plr.hand.erase(plr.hand.begin() + di->handIndex);
 				this->notify("discard_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
@@ -256,9 +271,13 @@ SerializedGame Game::serializeForPlayer(PlayerSide player) {
 		phaseToString(this->phase),
 		this->field.serialize(),
 		serializeCards(plr.hand),
+		serializeCards(plr.junk),
 		(int) plr.deck.size(),
+		(int) plr.lost.size(),
 		(int) enemy.hand.size(),
 		(int) enemy.deck.size(),
+		(int) enemy.junk.size(),
+		(int) enemy.lost.size(),
 	};
 }
 

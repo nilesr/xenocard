@@ -42,7 +42,7 @@ void Player::drawCard() {
 }
 
 void Player::payCost(int n) {
-	this->discard.insert(this->discard.end(), this->deck.rbegin(), this->deck.rbegin() + n);
+	this->lost.insert(this->lost.end(), this->deck.rbegin(), this->deck.rbegin() + n);
 	for (int i = 0; i < n; i++) {
 		this->deck.pop_back();
 	}

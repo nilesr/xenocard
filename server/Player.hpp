@@ -31,7 +31,7 @@ public:
 	std::vector<std::shared_ptr<Card>> hand;
 	std::vector<std::shared_ptr<Card>> deck;
 	std::vector<std::shared_ptr<Card>> junk;
-	std::vector<std::shared_ptr<Card>> discard;
+	std::vector<std::shared_ptr<Card>> lost;
 
 	std::unique_ptr<Instruction> recvInstruction();
 	void sendError(std::string what);

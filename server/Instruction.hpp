@@ -29,6 +29,7 @@ struct ShuffleInstruction: public Instruction {
 struct PlayInstruction: public Instruction {
 	InstructionType getType() override { return InstructionType::PLAY; };
 
+	// TODO add optional discardPosition for gnosis cards
 	PlayInstruction(int handIndex, Position position): handIndex(handIndex), position(position) {};
 	int handIndex;
 	Position position;

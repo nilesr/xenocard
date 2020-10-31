@@ -78,15 +78,19 @@ void Connection::notify(json_t* what) {
 }
 
 void Connection::sendGame(SerializedGame game) {
-	auto packed = json_pack("{s:s, s:i, s:s, s:o, s:o, s:i, s:i, s:i}",
+	auto packed = json_pack("{s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i}",
 			"player", game.player.c_str(),
 			"turn", game.turn,
 			"phase", game.phase.c_str(),
 			"field", game.field,
 			"hand", game.hand,
-			"deckSize", game.deckSize,
-			"enemyHandSize", game.enemyHandSize,
-			"enemyDeckSize", game.enemyDeckSize
+			"junk", game.junk,
+			"deck_size", game.deckSize,
+			"lost_size", game.lostSize,
+			"enemy_hand_size", game.enemyHandSize,
+			"enemy_deck_size", game.enemyDeckSize,
+			"enemy_junk_size", game.enemyJunkSize,
+			"enemy_lost_size", game.enemyLostSize
 		);
 	char* stringified = json_dumps(packed, 0);
 	int written = write(this->fd, stringified, strlen(stringified));

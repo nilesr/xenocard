@@ -1,7 +1,10 @@
-player to server:
-	shuffle()
-	set phase(new phase)
-	swap(slot, slot)
-	play(hand index, slot)
-	use card effect(hand index, optional slot)
-	discard(hand index)
+lost and junk
+attack deck -> cards go to lost
+pay cost -> lost
+battle card ran out of health -> cards go to junk
+used event cards -> junk
+discarded in adjust phase -> ???
+
+junk is visible, lost has only the count visible
+
+
