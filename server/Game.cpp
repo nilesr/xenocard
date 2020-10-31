@@ -12,10 +12,9 @@ void Game::notify(std::string event, json_t* extras) {
 bool Game::checkRequirements(CardRequirements reqs) {
 	auto [current_player, plr] = this->getCurrentPlayer();
 	for (const auto card : this->field.iterateForPlayer(current_player)) {
-		std::cout << "Found a card:" << std::endl;
-		std::cout << json_dumps(card->serialize(), 0) << std::endl;
 		if (card->getType() != CardType::BATTLE) continue;
 		auto battle_card = std::dynamic_pointer_cast<BattleCard>(card);
+		if (battle_card->getE()) continue;
 		const auto type = battle_card->getBattleType();
 		// reqs[type] will insert the value as 0 if it doesn't exist
 		if (reqs[type] > 0) {
