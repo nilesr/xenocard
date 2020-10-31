@@ -1,15 +1,28 @@
 #pragma once
 #include "Player.hpp"
 #include "Connection.hpp"
+#include "Field.hpp"
+#include "Random.hpp"
+#include "SerializedGame.hpp"
 
 class Game {
+	int turn{-1};
+	Phase phase;
+
 	Player p1;
 	Player p2;
 
-	Phase phase;
+	Random& random;
+
+	Field field{};
 
 public:
-	Game(Connection p1con, Connection p2con): p1(p1con), p2(p2con), phase(Phase::P1_DRAW) {};
+	Game(Connection p1con, Connection p2con, Random& random): phase(Phase::P1_SHUFFLE), p1(PlayerSide::P1, p1con, random), p2(PlayerSide::P2, p2con, random), random(random) {};
 
 	void run();
+
+private:
+	void sendState();
+	SerializedGame serializeForPlayer(PlayerSide player);
+
 };

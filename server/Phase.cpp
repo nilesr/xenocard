@@ -4,6 +4,8 @@
 
 Phase phaseFromString(std::string phase) {
 	static const std::map<std::string, Phase> phases {
+		{"P1_SHUFFLE", Phase::P1_SHUFFLE}, // we will never need to accept this from a client, but oh well
+		{"P2_SHUFFLE", Phase::P2_SHUFFLE},
 		{"P1_DRAW", Phase::P1_DRAW},
 		{"P1_MOVE", Phase::P1_MOVE},
 		{"P1_EVENT", Phase::P1_EVENT},
@@ -24,9 +26,35 @@ Phase phaseFromString(std::string phase) {
 	throw std::logic_error{"Bad phase"};
 }
 
+std::string phaseToString(Phase phase) {
+	static const std::map<Phase, std::string> phases {
+		{Phase::P1_SHUFFLE, "P1_SHUFFLE"},
+		{Phase::P2_SHUFFLE, "P2_SHUFFLE"},
+		{Phase::P1_DRAW, "P1_DRAW"},
+		{Phase::P1_MOVE, "P1_MOVE"},
+		{Phase::P1_EVENT, "P1_EVENT"},
+		{Phase::P1_SET, "P1_SET"},
+		{Phase::P1_BLOCK, "P1_BLOCK"},
+		{Phase::P1_BATTLE, "P1_BATTLE"},
+		{Phase::P1_ADJUST, "P1_ADJUST"},
+		{Phase::P2_DRAW, "P2_DRAW"},
+		{Phase::P2_MOVE, "P2_MOVE"},
+		{Phase::P2_EVENT, "P2_EVENT"},
+		{Phase::P2_SET, "P2_SET"},
+		{Phase::P2_BLOCK, "P2_BLOCK"},
+		{Phase::P2_BATTLE, "P2_BATTLE"},
+		{Phase::P2_ADJUST, "P2_ADJUST"},
+	};
+	auto iter = phases.find(phase);
+	if (iter != phases.end()) return iter->second;
+	throw std::logic_error{"Bad phase"};
+}
+
 
 Phase nextPhase(Phase phase) {
 	switch (phase) {
+		case Phase::P1_SHUFFLE: return Phase::P2_SHUFFLE;
+		case Phase::P2_SHUFFLE: return Phase::P1_DRAW;
 		case Phase::P1_DRAW: return Phase::P1_MOVE;
 		case Phase::P1_MOVE: return Phase::P1_EVENT;
 		case Phase::P1_EVENT: return Phase::P1_SET;

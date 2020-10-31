@@ -2,6 +2,7 @@
 #include "Phase.hpp"
 
 enum class InstructionType {
+	SHUFFLE,
 	SET_PHASE,
 	PLAY,
 	MOVE,
@@ -18,4 +19,9 @@ struct SetPhaseInstruction: public Instruction {
 	SetPhaseInstruction(Phase newPhase): newPhase(newPhase) {};
 	Phase newPhase;
 };
+
+struct ShuffleInstruction: public Instruction {
+	InstructionType getType() override { return InstructionType::SHUFFLE; };
+};
+
 

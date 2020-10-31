@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include <iostream>
+#include <algorithm>
 
 std::unique_ptr<Instruction> Player::recvInstruction() {
 	while (true) {
@@ -14,5 +15,19 @@ std::unique_ptr<Instruction> Player::recvInstruction() {
 
 void Player::sendError(std::string what) {
 	this->conn.sendError(what);
+}
+
+void Player::dealInitialHand() {
+	this->deck.insert(this->deck.end(), this->hand.begin(), this->hand.end());
+	this->hand.clear();
+	std::shuffle(this->deck.begin(), this->deck.end(), this->random);
+	this->hand.insert(this->hand.begin(), this->deck.rbegin(), this->deck.rbegin() + 6);
+	for (int i = 0; i < 6; i++) {
+		this->deck.pop_back();
+	}
+}
+
+void Player::sendState(SerializedGame game) {
+	this->conn.sendGame(game);
 }
 

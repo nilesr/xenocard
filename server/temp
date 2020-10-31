@@ -1,4 +1,7 @@
 player to server:
+	shuffle()
 	set phase(new phase)
 	swap(slot, slot)
 	play(hand index, slot)
+	use card effect(hand index, optional slot)
+	discard(hand index)

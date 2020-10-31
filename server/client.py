@@ -5,6 +5,8 @@ def handle_input(ii):
 	i = ii.split(" ")
 	if i[0] == "phase":
 		return json.dumps({"method": "set_phase", "phase": i[1]})
+	if i[0] == "shuffle":
+		return json.dumps({"method": "shuffle"})
 	print("Didn't understand command")
 	return ii
 
@@ -23,7 +25,7 @@ async def client():
 			await writer.drain()
 			inp = make_inp()
 		if rd.done():
-			print(rd.result())
+			print(json.dumps(json.loads(rd.result().decode()), indent=4))
 			rd = make_rd()
 
 asyncio.run(client())

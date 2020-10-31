@@ -49,6 +49,9 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 			phase
 		);
 	}
+	if (meth == "shuffle") {
+		return std::make_unique<ShuffleInstruction>();
+	}
 
 	throw std::logic_error("Unknown method");
 }
@@ -65,3 +68,21 @@ void Connection::sendError(std::string what) {
 	json_decref(obj);
 }
 
+void Connection::sendGame(SerializedGame game) {
+	auto packed = json_pack("{s:s, s:i, s:s, s:o, s:o, s:i, s:i, s:i}",
+			"player", game.player.c_str(),
+			"turn", game.turn,
+			"phase", game.phase.c_str(),
+			"field", game.field,
+			"hand", game.hand,
+			"deckSize", game.deckSize,
+			"enemyHandSize", game.enemyHandSize,
+			"enemyDeckSize", game.enemyDeckSize
+		);
+	char* stringified = json_dumps(packed, 0);
+	int written = write(this->fd, stringified, strlen(stringified));
+	write(this->fd, "\n", 1);
+	std::cout << "Wrote " << written << " bytes back to the client" << std::endl;
+	free(stringified);
+	json_decref(packed);
+}

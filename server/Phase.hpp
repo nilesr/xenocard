@@ -2,6 +2,8 @@
 #include <string>
 
 enum class Phase {
+	P1_SHUFFLE,
+	P2_SHUFFLE,
 	P1_DRAW,
 	P1_MOVE,
 	P1_EVENT,
@@ -19,5 +21,7 @@ enum class Phase {
 };
 
 Phase phaseFromString(std::string phase);
+
+std::string phaseToString(Phase phase);
 
 Phase nextPhase(Phase phase);

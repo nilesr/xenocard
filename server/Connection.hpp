@@ -1,6 +1,7 @@
 #pragma once
 #include "Instruction.hpp"
 #include "Phase.hpp"
+#include "SerializedGame.hpp"
 #include <stdlib.h>
 #include <stdio.h>
 #include <optional>
@@ -14,4 +15,5 @@ public:
 
 	std::unique_ptr<Instruction> readInstruction();
 	void sendError(std::string what);
+	void sendGame(SerializedGame game);
 };

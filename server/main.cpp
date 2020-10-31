@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <iostream>
 #include <cassert>
+#include <random>
 
 int main() {
 	int sockfd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
@@ -32,9 +33,11 @@ int main() {
 	int p2fd = accept(sockfd, (struct sockaddr*) &sock_client, &client_sock_len);
 	std::cout << p2fd << std::endl;
 
+	std::mt19937 random{std::random_device{}()};
+
 	Connection p1{p1fd};
 	Connection p2{p2fd};
 
-	Game g{p1, p2};
+	Game g{p1, p2, random};
 	g.run();
 }

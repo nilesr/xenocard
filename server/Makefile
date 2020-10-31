@@ -2,7 +2,7 @@ CPPFLAGS=-g -std=gnu++17 -Ivendor/jansson/include -Wall -Wextra
 LDFLAGS=-g
 LDLIBS=-Lvendor/jansson/lib -ljansson
 
-SRCS=$(wildcard *.cpp)
+SRCS=$(wildcard *.cpp cards/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 # ugly hack
@@ -21,8 +21,8 @@ vendor/jansson: vendor
 	mkdir vendor/jansson
 
 vendor/jansson/include: vendor/jansson-src vendor/jansson
-	cd vendor/jansson-src; ./configure --prefix=$(ROOT_DIR)/vendor/jansson
-	make -C vendor/jansson-src
+	cd vendor/jansson-src; env CFLAGS=-ggdb3 ./configure --prefix=$(ROOT_DIR)/vendor/jansson
+	make -C vendor/jansson-src CFLAGS=-ggdb3
 	make -C vendor/jansson-src install
 
 Connection.cpp: vendor/jansson/include
@@ -37,7 +37,7 @@ depend: .depend
 	$(CXX) $(CPPFLAGS) -MM $^>>./.depend;
 
 clean:
-	rm -f *.o server
+	rm -f *.o cards/*.o server
 
 distclean: clean
 	rm -rf vendor

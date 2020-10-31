@@ -1,4 +1,5 @@
 server/.depend
 server/vendor
+server/cards/*.o
 server/*.o
 server/server
