@@ -4,33 +4,35 @@
 #include <jansson.h>
 #include "Position.hpp"
 
+class Battlefield {
+	std::optional<std::shared_ptr<Card>> TOP_LEFT;
+	std::optional<std::shared_ptr<Card>> TOP_RIGHT;
+	std::optional<std::shared_ptr<Card>> BOTTOM_LEFT;
+	std::optional<std::shared_ptr<Card>> BOTTOM_RIGHT;
+public:
+	std::optional<std::shared_ptr<Card>>& findCard(int index);
+	json_t* serialize();
+};
+class FieldSegment {
+	std::array<std::optional<std::shared_ptr<Card>>, 4> cards;
+public:
+	std::optional<std::shared_ptr<Card>>& findCard(int index);
+	json_t* serialize();
+};
+
+class PlayerField {
+	Battlefield battlefield;
+	FieldSegment standby;
+	FieldSegment situation;
+public:
+	std::optional<std::shared_ptr<Card>>& findCard(FieldSegmentEnum fs, int index);
+	json_t* serialize();
+};
+
 class Field {
 private:
-	std::optional<std::shared_ptr<Card>> P1_BATTLEFIELD_TOP_LEFT;
-	std::optional<std::shared_ptr<Card>> P1_BATTLEFIELD_TOP_RIGHT;
-	std::optional<std::shared_ptr<Card>> P1_BATTLEFIELD_BOTTOM_LEFT;
-	std::optional<std::shared_ptr<Card>> P1_BATTLEFIELD_BOTTOM_RIGHT;
-	std::optional<std::shared_ptr<Card>> P1_STANDBY_1;
-	std::optional<std::shared_ptr<Card>> P1_STANDBY_2;
-	std::optional<std::shared_ptr<Card>> P1_STANDBY_3;
-	std::optional<std::shared_ptr<Card>> P1_STANDBY_4;
-	std::optional<std::shared_ptr<Card>> P1_SITUATION_1;
-	std::optional<std::shared_ptr<Card>> P1_SITUATION_2;
-	std::optional<std::shared_ptr<Card>> P1_SITUATION_3;
-	std::optional<std::shared_ptr<Card>> P1_SITUATION_4;
-
-	std::optional<std::shared_ptr<Card>> P2_BATTLEFIELD_TOP_LEFT;
-	std::optional<std::shared_ptr<Card>> P2_BATTLEFIELD_TOP_RIGHT;
-	std::optional<std::shared_ptr<Card>> P2_BATTLEFIELD_BOTTOM_LEFT;
-	std::optional<std::shared_ptr<Card>> P2_BATTLEFIELD_BOTTOM_RIGHT;
-	std::optional<std::shared_ptr<Card>> P2_STANDBY_1;
-	std::optional<std::shared_ptr<Card>> P2_STANDBY_2;
-	std::optional<std::shared_ptr<Card>> P2_STANDBY_3;
-	std::optional<std::shared_ptr<Card>> P2_STANDBY_4;
-	std::optional<std::shared_ptr<Card>> P2_SITUATION_1;
-	std::optional<std::shared_ptr<Card>> P2_SITUATION_2;
-	std::optional<std::shared_ptr<Card>> P2_SITUATION_3;
-	std::optional<std::shared_ptr<Card>> P2_SITUATION_4;
+	PlayerField p1;
+	PlayerField p2;
 
 public:
 	std::optional<std::shared_ptr<Card>>& findCard(Position pos);

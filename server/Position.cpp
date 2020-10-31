@@ -8,10 +8,10 @@ PlayerSide playerSideFromString(std::string in) {
 	throw std::logic_error("Invalid player side");
 }
 
-FieldSegment fieldSegmentFromString(std::string in) {
-	if (in == "BATTLEFIELD") return FieldSegment::BATTLEFIELD;
-	if (in == "STANDBY") return FieldSegment::STANDBY;
-	if (in == "SITUATION") return FieldSegment::SITUATION;
+FieldSegmentEnum fieldSegmentFromString(std::string in) {
+	if (in == "BATTLEFIELD") return FieldSegmentEnum::BATTLEFIELD;
+	if (in == "STANDBY") return FieldSegmentEnum::STANDBY;
+	if (in == "SITUATION") return FieldSegmentEnum::SITUATION;
 	throw std::logic_error("Invalid field segment");
 }
 

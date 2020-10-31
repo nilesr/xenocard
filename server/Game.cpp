@@ -68,15 +68,15 @@ void Game::run() {
 					plr.sendError("You can't play event cards onto the field, call use_card_effect instead");
 					break;
 				}
-				if (to_play->getType() == CardType::SITUATION && pi->position.segment != FieldSegment::SITUATION) {
+				if (to_play->getType() == CardType::SITUATION && pi->position.segment != FieldSegmentEnum::SITUATION) {
 					plr.sendError("Situation cards must be played into the situation field segment");
 					break;
 				}
-				if (to_play->getType() == CardType::BATTLE && pi->position.segment != FieldSegment::STANDBY) {
+				if (to_play->getType() == CardType::BATTLE && pi->position.segment != FieldSegmentEnum::STANDBY) {
 					plr.sendError("Battle cards must be played into the standby field segment");
 					break;
 				}
-				if (to_play->getType() == CardType::BATTLE_WEAPON && pi->position.segment == FieldSegment::SITUATION) {
+				if (to_play->getType() == CardType::BATTLE_WEAPON && pi->position.segment == FieldSegmentEnum::SITUATION) {
 					plr.sendError("Weapon cards must be played into the standby or battlefield field segments");
 					break;
 				}

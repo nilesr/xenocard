@@ -2,7 +2,7 @@
 #include "PlayerSide.hpp"
 #include <jansson.h>
 
-enum class FieldSegment {
+enum class FieldSegmentEnum {
 	BATTLEFIELD,
 	STANDBY,
 	SITUATION,
@@ -10,7 +10,7 @@ enum class FieldSegment {
 
 struct Position {
 	PlayerSide playerSide;
-	FieldSegment segment;
+	FieldSegmentEnum segment;
 	int index;
 };
 
