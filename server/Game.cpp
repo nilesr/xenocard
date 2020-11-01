@@ -159,6 +159,7 @@ void Game::run() {
 						plr.sendError("Weapon cards must be played on top of a battle card");
 						break;
 					}
+					// TODO check that the target battle card can equip the weapon, (lvl 1 kos-mos, lvl 10 kos-mos, durandal, etc..)
 					// Good enough for me
 					auto target_card = dynamic_cast<BattleCard*>(target_slot->get());
 					// Discard the weapon already on the target card if they have one

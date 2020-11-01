@@ -20,6 +20,7 @@ enum class BattleCardType {
 	REALIAN,
 	MECH,
 	GNOSIS,
+	BUNNY,
 };
 
 std::string battleCardTypeToString(BattleCardType battleCardType);
