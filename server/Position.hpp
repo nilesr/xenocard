@@ -14,4 +14,9 @@ struct Position {
 	int index;
 };
 
-Position positionFromJson(json_t* obj);
+PlayerSide playerSideFromString(std::string in);
+FieldSegmentEnum fieldSegmentFromString(std::string in);
+std::string fieldSegmentToString(FieldSegmentEnum in);
+
+Position positionFromJson(const json_t* const obj);
+json_t* serializePosition(Position p);

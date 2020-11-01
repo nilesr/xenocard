@@ -44,6 +44,7 @@ void Player::drawCard() {
 void Player::payCost(int n) {
 	this->lost.insert(this->lost.end(), this->deck.rbegin(), this->deck.rbegin() + n);
 	for (int i = 0; i < n; i++) {
+		// TODO check if the deck is empty
 		this->deck.pop_back();
 	}
 }

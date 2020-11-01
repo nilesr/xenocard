@@ -13,9 +13,9 @@ json_t* map_to_obj(std::map<K, V> map, std::string (*transform_key)(K), json_t* 
 }
 
 
-std::optional<std::string> getString(json_t* json, const char* key);
+std::optional<std::string> getString(const json_t* const json, const char* key);
 
-std::optional<int> getInt(json_t* json, const char* key);
+std::optional<int> getInt(const json_t* const json, const char* key);
 
 class defer_decref {
 	json_t* json;

@@ -11,6 +11,8 @@ def handle_input(ii):
 		return json.dumps({"method": "play", "hand_index": int(i[1]), "position": {"player_side": i[2], "field_segment": i[3], "index": int(i[4])}})
 	if i[0] == "discard":
 		return json.dumps({"method": "discard", "hand_index": int(i[1])})
+	if i[0] == "move":
+		return json.dumps({"method": "move", "start": {"player_side": i[1], "field_segment": i[2], "index": int(i[3])}, "end": {"player_side": i[4], "field_segment": i[5], "index": int(i[6])}})
 	print("Didn't understand command")
 	return ii
 

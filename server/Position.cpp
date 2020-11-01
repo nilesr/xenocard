@@ -15,7 +15,16 @@ FieldSegmentEnum fieldSegmentFromString(std::string in) {
 	throw std::logic_error("Invalid field segment");
 }
 
-Position positionFromJson(json_t* obj) {
+std::string fieldSegmentToString(FieldSegmentEnum in) {
+	switch (in) {
+		case FieldSegmentEnum::BATTLEFIELD: return "BATTLEFIELD";
+		case FieldSegmentEnum::STANDBY: return "STANDBY";
+		case FieldSegmentEnum::SITUATION: return "SITUATION";
+	}
+	throw std::logic_error("Invalid field segment");
+}
+
+Position positionFromJson(const json_t* const obj) {
 	auto ps_str = getString(obj, "player_side");
 	if (!ps_str.has_value()) throw std::logic_error("Missing player_side from position json (or not a string)");
 	auto fs_str = getString(obj, "field_segment");
@@ -29,4 +38,12 @@ Position positionFromJson(json_t* obj) {
 		fieldSegmentFromString(*fs_str),
 		*index
 	};
+}
+
+json_t* serializePosition(Position p) {
+	json_t* r = json_object();
+	json_object_set(r, "player_side", json_string(playerSideToString(p.playerSide).c_str()));
+	json_object_set(r, "field_segment", json_string(fieldSegmentToString(p.segment).c_str()));
+	json_object_set(r, "index", json_integer(p.index));
+	return r;
 }

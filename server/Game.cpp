@@ -225,6 +225,33 @@ void Game::run() {
 				}
 			}
 			break;
+		case InstructionType::MOVE:
+			{
+				if (this->phase != Phase::P1_MOVE && this->phase != Phase::P1_MOVE) {
+					plr.sendError("You must be in the move phase to move a card");
+					break;
+				}
+				auto mi = dynamic_cast<MoveInstruction*>(instruction.get());
+				if (mi->start.playerSide != current_player || mi->end.playerSide != current_player) {
+					plr.sendError("You can only move around cards on your side of the field");
+					break;
+				}
+				const auto startSituation = mi->start.segment == FieldSegmentEnum::SITUATION;
+				const auto endSituation = mi->end.segment == FieldSegmentEnum::SITUATION;
+				if ((startSituation && !endSituation) || (endSituation && !startSituation)) {
+					plr.sendError("You are trying to move a card between the situation segment and the battlefield or standby segment, or vice versa");
+					break;
+				}
+				auto& start_card = this->field.findCard(mi->start);
+				if (!start_card.has_value()) {
+					plr.sendError("You are trying to move from an empty spot, did you mean to swap start and end?");
+					break;
+				}
+				auto& end_card = this->field.findCard(mi->end);
+				std::swap(start_card, end_card);
+				this->notify("move", json_pack("{s:o, s:o}", "start", serializePosition(mi->start), "end", serializePosition(mi->end)));
+			}
+			break;
 		case InstructionType::DISCARD:
 			{
 				if (this->phase != Phase::P1_ADJUST && this->phase != Phase::P2_ADJUST) {
