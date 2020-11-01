@@ -59,7 +59,7 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 
 void Connection::sendError(std::string what) {
 	json_t* obj = json_object();
-	json_object_set(obj, "type", json_string("error"));
+	json_object_set(obj, "method", json_string("error"));
 	json_object_set(obj, "error", json_string(what.c_str()));
 	char* stringified = json_dumps(obj, 0);
 	int written = write(this->fd, stringified, strlen(stringified));
