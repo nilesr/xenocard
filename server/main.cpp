@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include <iostream>
 #include <cassert>
 #include <random>
@@ -28,16 +29,25 @@ int main() {
 	assert(listen(sockfd, 2) == 0);
 	struct sockaddr_in sock_client{};
 	socklen_t client_sock_len = sizeof(sock_client);
-	int p1fd = accept(sockfd, (struct sockaddr*) &sock_client, &client_sock_len);
-	std::cout << p1fd << std::endl;
-	int p2fd = accept(sockfd, (struct sockaddr*) &sock_client, &client_sock_len);
-	std::cout << p2fd << std::endl;
+	while (true) {
+		int p1fd = accept(sockfd, (struct sockaddr*) &sock_client, &client_sock_len);
+		std::cout << p1fd << std::endl;
+		int p2fd = accept(sockfd, (struct sockaddr*) &sock_client, &client_sock_len);
+		std::cout << p2fd << std::endl;
 
-	std::mt19937 random{std::random_device{}()};
+		if (!fork()) {
+			close(sockfd);
 
-	Connection p1{p1fd};
-	Connection p2{p2fd};
+			std::mt19937 random{std::random_device{}()};
 
-	Game g{p1, p2, random};
-	g.run();
+			Connection p1{p1fd};
+			Connection p2{p2fd};
+
+			Game g{p1, p2, random};
+			g.run();
+			return 0;
+		}
+		close(p1fd);
+		close(p2fd);
+	}
 }
