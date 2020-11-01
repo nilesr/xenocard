@@ -25,6 +25,7 @@ std::string battleCardTypeToString(BattleCardType battleCardType) {
 		case BattleCardType::MECH: return "MECH";
 		case BattleCardType::REALIAN: return "REALIAN";
 		case BattleCardType::GNOSIS: return "GNOSIS";
+		case BattleCardType::BUNNY: return "BUNNY";
 	}
 	throw std::logic_error{"should never get here"};
 }
