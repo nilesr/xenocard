@@ -31,7 +31,7 @@ class App extends React.Component {
 		if (this.state.player == null) {
 			return "Connected, waiting for a second player";
 		}
-		const field_width = window.innerHeight - 200;
+		const field_width = window.innerHeight - 150;
 		const field_x_offset = (window.innerWidth - field_width)/2;
 		return <div>
 			<div style={{
@@ -61,18 +61,18 @@ class App extends React.Component {
 				height: "200px",
 				display: 'grid',
 				gridTemplateColumns: "150px 300px 1fr",
-				gridTemplateRows: '100%',
+				gridTemplateRows: '50px 150px',
 			}}>
-				<div>
+				<div style={{gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 2}}>
 					<Phases player={this.state.player} phase={this.state.phase} />
 				</div>
-				<div>
+				<div style={{gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 2, gridRowEnd: 2}}>
 					<Buttons
 						player={this.state.player}
 						phase={this.state.phase}
 						sendInstruction={this.sendInstruction} />
 				</div>
-				<div>
+				<div style={{gridColumnStart: 3, gridColumnEnd: 3, gridRowStart: 2, gridRowEnd: 2}}>
 					<Hand
 						cards={this.state.hand}
 						onClick={this.onHandClick}

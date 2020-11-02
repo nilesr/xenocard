@@ -15,7 +15,7 @@ class Hand extends React.Component {
 						<Card
 							card={card}
 							onClick={() => this.props.onClick(i)}
-							scale={2/5}
+							scale={150/500}
 							selected={i == this.props.selectedIndex} />
 				</div>)}
 		</div>;
