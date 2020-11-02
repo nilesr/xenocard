@@ -9,6 +9,7 @@ class CardOverlay extends React.Component {
 				opacity: "0.25",
 				animation: "fade_opacity 1s infinite",
 				animationDirection: "alternate",
+				borderRadius: "2.5% 3%", // could actually recalculate it from the scale but close enough
 			}}
 		>
 		</div>;

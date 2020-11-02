@@ -13,11 +13,11 @@ class Card extends React.Component {
 		return <>
 				<div style={{
 					backgroundImage: "url(images/cards" + position.set + ".jpg)",
-					backgroundPosition: "-" + (position.left * 700 * scale) + "px -" + (position.top * 500 * scale) + "px",
+					backgroundPosition: "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px",
 					backgroundSize: (7000*scale) + "px",
-					width: (700*scale) + "px",
-					height: (500*scale) + "px",
-					borderRadius: (10*scale) + "px",
+					width: (688*scale) + "px",
+					height: (488*scale) + "px",
+					borderRadius: (15*scale) + "px",
 					display: "inline-block",
 				}}
 				onClick={() => { if (this.props.onClick) this.props.onClick(); }}

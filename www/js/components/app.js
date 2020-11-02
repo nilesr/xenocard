@@ -8,7 +8,6 @@ class App extends React.Component {
 		this.state = {
 			connected: false,
 			ws: ws,
-			log: [],
 			player: null,
 			turn: 0,
 			phase: null,
@@ -32,16 +31,30 @@ class App extends React.Component {
 		if (this.state.player == null) {
 			return "Connected, waiting for a second player";
 		}
+		const field_width = window.innerHeight - 200;
+		const field_x_offset = (window.innerWidth - field_width)/2;
 		return <div>
-			{/* TODO extract into Log if I'm going to keep it */}
-			<ul>
-				{this.state.log.map((m, i) => 
-					<li key={i}><pre>{JSON.stringify(m)}</pre></li>
-				)}
-			</ul>
-			<Field /> {/* TODO */}
 			<div style={{
-				position: "absolute",
+				position: "fixed",
+				top: 0,
+				left: field_x_offset,
+				width: field_width + "px",
+				height: field_width + "px",
+			}}>
+				<Field
+					height={field_width}
+					player={this.state.player} 
+					field={this.state.field}
+					junk={this.state.junk}
+					deckSize={this.state.deck_size}
+					lostSize={this.state.lost_size}
+					enemyDeckSize={this.state.enemy_deck_size}
+					enemyJunkSize={this.state.enemy_junk_size}
+					enemyLostSize={this.state.enemy_lost_size}
+				/>
+			</div>
+			<div style={{
+				position: "fixed",
 				bottom: 0,
 				left: 0,
 				width: "100%",
@@ -69,8 +82,6 @@ class App extends React.Component {
 		</div>;
 	}
 	onMessage(data) {
-		// debug
-		this.setState(s => {return {log: s.log.concat([data])}; });
 		if (data.event == "error") {
 			this.recvError(data);
 		} else if (data.event == "state") {

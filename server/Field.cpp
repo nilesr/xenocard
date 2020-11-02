@@ -33,8 +33,8 @@ json_t* Field::serialize() {
 	auto p1 = this->p1.serialize();
 	auto p2 = this->p2.serialize();
 
-	json_object_set(obj, "p1", p1);
-	json_object_set(obj, "p2", p2);
+	json_object_set(obj, "P1", p1);
+	json_object_set(obj, "P2", p2);
 	return obj;
 }
 

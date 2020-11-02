@@ -4,9 +4,11 @@ class Phases extends React.Component {
 		const phase_index = ["DRAW", "MOVE", "EVENT", "SET", "BLOCK", "BATTLE", "ADJUST"].indexOf(this.props.phase.split("_")[1]);
 		if (phase_index < 0) {
 			if (["P1_SHUFFLE", "P2_SHUFFLE"].includes(this.props.phase)) {
-				const relative_player = this.props.phase.split("_")[0] != this.props.player ? "The other player is" : "You are"
-				return <div style={{border: "2px solid black", padding: 5, borderRadius: 5}}>
-					Current phase: {relative_player} re-drawing their hand up to 3 times before the game starts.
+				const message = this.props.phase.split("_")[0] != this.props.player
+					? "The other player is re-drawing their hand up to 3 times before the first turn"
+					: "You are re-drawing your hand up to 3 times before the first turn";
+				return <div style={{border: "2px solid white", padding: 5, borderRadius: 5}}>
+					{message}
 				</div>;
 			}
 			return "Current phase: " + this.state.phase;

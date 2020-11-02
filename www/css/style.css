@@ -15,3 +15,8 @@
 		opacity: 0.50;
 	}
 }
+
+body {
+	color: white;
+	background-color: black;
+}

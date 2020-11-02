@@ -10,7 +10,7 @@ class Buttons extends React.Component {
 			<div>
 				{playerSideForPhase(this.props.phase) == this.props.player
 					? <button onClick={this.endPhase}>End Phase</button>
-					: <div style={{border: "2px solid black", padding: 5, borderRadius: 5}}>
+					: <div style={{border: "2px solid white", padding: 5, borderRadius: 5}}>
 						Waiting for the other player to end the phase
 					</div>}
 			</div>
