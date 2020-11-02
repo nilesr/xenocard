@@ -17,6 +17,7 @@ class Buttons extends React.Component {
 					? <button onClick={this.shuffle} disabled={this.state.shuffles == 3}>Re-draw hand ({this.state.shuffles}/3)</button>
 					: null}
 			</div>
+			Hint: Hold V while hovering over a card to enlarge! (Not implemented yet)
 		</div>;
 	}
 	endPhase = () => this.props.sendInstruction("set_phase", {"phase": nextPhase(this.props.phase)});
