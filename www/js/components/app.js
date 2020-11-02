@@ -37,11 +37,12 @@ class App extends React.Component {
 					<li key={i}><pre>{JSON.stringify(m)}</pre></li>
 				)}
 			</ul>
+			<Field /> {/* TODO */}
+			<Phases player={this.state.player} phase={this.state.phase} />
 			<Buttons
 				player={this.state.player}
 				phase={this.state.phase}
 				sendInstruction={this.sendInstruction} />
-			<Field /> {/* TODO */}
 			<Hand cards={this.state.hand} />
 		</div>;
 	}
@@ -68,7 +69,12 @@ class App extends React.Component {
 	sendInstruction = (method, extras) => {
 		extras ||= {};
 		extras.method = method;
-		this.state.ws.send(JSON.stringify(extras));
+		const raw = JSON.stringify(extras);
+		if (raw.length > 4096) {
+			alert(method + " message is too long to be sent to the server - logged to the console.");
+			console.error(extras);
+		}
+		this.state.ws.send(raw);
 	}
 	recvGame(game) {
 		this.setState({

@@ -17,7 +17,7 @@ function nextPhase(phase) {
 		case "P2_BATTLE": return "P2_ADJUST";
 		case "P2_ADJUST": return "P1_DRAW";
 	}
-	throw "Invalid phase for nextPhase";
+	throw "Invalid phase " + phase + " for nextPhase";
 }
 
 function playerSideForPhase(phase) {

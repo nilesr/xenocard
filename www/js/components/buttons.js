@@ -6,7 +6,7 @@ class Buttons extends React.Component {
 		};
 	}
 	render() {
-		return <div>
+		return <div className="buttons">
 			<div>
 				{playerSideForPhase(this.props.phase) == this.props.player
 					? <button onClick={this.endPhase}>End Phase</button>
@@ -19,7 +19,7 @@ class Buttons extends React.Component {
 			</div>
 		</div>;
 	}
-	endPhase = () => this.props.sendInstruction("set_phase", {"phase": nextPhase(this.state.phase)});
+	endPhase = () => this.props.sendInstruction("set_phase", {"phase": nextPhase(this.props.phase)});
 	shuffle = () => {
 		this.setState(s => {return {shuffles: s.shuffles + 1}});
 		this.props.sendInstruction("shuffle");

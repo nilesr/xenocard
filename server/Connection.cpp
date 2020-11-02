@@ -15,6 +15,9 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 		std::cout << c;
 		buf[i++] = c;
 	}
+	if (i == sizeof(buf)) {
+		std::cout << "Probably hit the max buffer size reading in a message" << std::endl;
+	}
 	std::cout << std::endl;
 	json_error_t error;
 	json_t* json = json_loadb(buf, i, 0, &error);

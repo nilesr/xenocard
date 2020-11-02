@@ -1,0 +1,8 @@
+@keyframes phases_border {
+	0% {
+		border-color: red;
+	}
+	100% {
+		border-color: lime;
+	}
+}
