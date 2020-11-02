@@ -87,6 +87,7 @@ void Game::run() {
 				if ((this->phase == Phase::P1_SHUFFLE || this->phase == Phase::P2_SHUFFLE) && shuffles < 3) {
 					plr.dealInitialHand();
 					shuffles++;
+					this->notify("shuffle", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
 				} else {
 					plr.sendError("You may not shuffle at this time, either it is not that phase, or you have already shuffled 3 times");
 				}

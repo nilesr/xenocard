@@ -44,6 +44,7 @@ public:
 	virtual CardRequirements getRequirements() = 0;
 	virtual int getCost() { return 0; };
 	virtual ~Card() {};
+	virtual std::array<int, 3> getImageLocation() = 0;
 	json_t* serialize();
 protected:
 	virtual void serialize(json_t* obj);

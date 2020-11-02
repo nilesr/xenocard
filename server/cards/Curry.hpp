@@ -9,4 +9,8 @@ class Curry: public EventCard {
 	CardRequirements getRequirements() override {
 		return {}; // TODO
 	}
+
+	std::array<int, 3> getImageLocation() override {
+		return {2, 1, 5};
+	}
 };

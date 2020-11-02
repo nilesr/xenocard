@@ -55,6 +55,8 @@ void Card::serialize(json_t* obj) {
 	json_t* (*int_to_json_int)(int) = [](int a){return json_integer((int) a);};
 	std::string (*optional_battle_card_type_to_string)(std::optional<BattleCardType>) = [](std::optional<BattleCardType> a){return a.has_value() ? battleCardTypeToString(*a) : "null";};
 	json_object_set(obj, "requirements", map_to_obj(this->getRequirements(), optional_battle_card_type_to_string, int_to_json_int));
+	const auto location = this->getImageLocation();
+	json_object_set(obj, "image_location", json_pack("{s:i, s:i, s:i}", "set", location[0], "top", location[1], "left", location[2]));
 }
 
 void BattleCard::serialize(json_t* obj) {

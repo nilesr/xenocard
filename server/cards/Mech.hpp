@@ -18,5 +18,9 @@ class Mech: public BattleCard {
 		return AttackPattern::BALLISTIC;
 	};
 
+	std::array<int, 3> getImageLocation() override {
+		return {1, 3, 6};
+	}
+
 };
 

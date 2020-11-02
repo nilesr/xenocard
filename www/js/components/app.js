@@ -2,9 +2,11 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		const ws = new WebSocket('ws://localhost:8080/');
+		ws.onopen = () => this.setState({connected: true});
 		ws.onclose = () => alert('Disconnected');
 		ws.onmessage = (event) => this.onMessage(JSON.parse(event.data));
 		this.state = {
+			connected: false,
 			ws: ws,
 			log: [],
 			player: null,
@@ -22,15 +24,25 @@ class App extends React.Component {
 		};
 	}
 	render() {
+		if (!this.state.connected) {
+			return "Waiting for connection to open (if it fails you may be staring at this forever)";
+		}
+		if (this.state.player == null) {
+			return "Connected, waiting for a second player";
+		}
 		return <div>
+			{/* TODO extract into Log if I'm going to keep it */}
 			<ul>
 				{this.state.log.map((m, i) => 
-					<li key={i}>{JSON.stringify(m)}</li>
+					<li key={i}><pre>{JSON.stringify(m)}</pre></li>
 				)}
 			</ul>
-			{this.state.phase && (playerSideForPhase(this.state.phase) == this.state.player)
-				? <button onClick={this.endPhase}>End Phase</button>
-				: null}
+			<Buttons
+				player={this.state.player}
+				phase={this.state.phase}
+				sendInstruction={this.sendInstruction} />
+			<Field /> {/* TODO */}
+			<Hand cards={this.state.hand} />
 		</div>;
 	}
 	onMessage(data) {
@@ -52,16 +64,26 @@ class App extends React.Component {
 	recvNotice(data) {
 		console.log(data);
 	}
-	endPhase = () => this.sendInstruction("set_phase", {"phase": nextPhase(this.state.phase)});
 
-	sendInstruction(method, extras) {
+	sendInstruction = (method, extras) => {
+		extras ||= {};
 		extras.method = method;
 		this.state.ws.send(JSON.stringify(extras));
 	}
 	recvGame(game) {
 		this.setState({
 			player: game.player,
+			turn: game.turn,
 			phase: game.phase,
+			field: game.field,
+			hand: game.hand,
+			junk: game.junk,
+			deck_size: game.deck_size,
+			lost_size: game.lost_size,
+			enemy_hand_size: game.enemy_hand_size,
+			enemy_deck_size: game.enemy_deck_size,
+			enemy_junk_size: game.enemy_junk_size,
+			enemy_lost_size: game.enemy_lost_size,
 		})
 	}
 };

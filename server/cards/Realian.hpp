@@ -17,5 +17,8 @@ class Realian: public BattleCard {
 		return AttackPattern::HAND;
 	};
 
+	std::array<int, 3> getImageLocation() override {
+		return {1, 2, 7};
+	}
 };
 

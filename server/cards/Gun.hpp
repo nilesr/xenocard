@@ -12,5 +12,8 @@ class Gun: public WeaponCard {
 	AttackPattern getAttackPattern() override {
 		return AttackPattern::BALLISTIC;
 	};
+	std::array<int, 3> getImageLocation() override {
+		return {1, 4, 9};
+	}
 
 };
