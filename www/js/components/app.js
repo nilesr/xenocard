@@ -21,6 +21,8 @@ class App extends React.Component {
 			enemy_deck_size: 0,
 			enemy_junk_size: 0,
 			enemy_lost_size: 0,
+			selection_state: null,
+			selection_hand_index: -1,
 		};
 	}
 	render() {
@@ -58,7 +60,10 @@ class App extends React.Component {
 						sendInstruction={this.sendInstruction} />
 				</div>
 				<div>
-					<Hand cards={this.state.hand} />
+					<Hand
+						cards={this.state.hand}
+						onClick={this.onHandClick}
+						selectedIndex={this.state.selection_hand_index}/>
 				</div>
 			</div>
 		</div>;
@@ -107,6 +112,33 @@ class App extends React.Component {
 			enemy_deck_size: game.enemy_deck_size,
 			enemy_junk_size: game.enemy_junk_size,
 			enemy_lost_size: game.enemy_lost_size,
+		})
+	}
+	onHandClick = (handIndex) => {
+		this.setState(s => {
+			if (s.selection_state == "move") {
+				// no effect
+				return {};
+			}
+			if (s.selection_state == "play") {
+				// no effect, cancel selection
+				return {selection_state: null, selection_hand_index: -1};
+			}
+			const card = s.hand[handIndex];
+			if (s.phase == s.player + "_ADJUST") {
+				if (!confirm("Are you sure you want to discard this card: " + card.name)) return;
+				this.sendInstruction("discard", {"hand_index": handIndex});
+				return {};
+			}
+			if (card.type == "EVENT") {
+				// TODO handle use card effect
+				alert("TODO");
+				throw "TODO"; // to get the stack trace into the console
+			}
+			return {
+				selection_state: "play",
+				selection_hand_index: handIndex,
+			};
 		})
 	}
 };

@@ -1,7 +1,6 @@
 class Hand extends React.Component {
 	render() {
-		// TODO distribute across the div
-		const width = 1458; // temp hardcoded
+		const width = window.innerWidth - 150 - 300;
 		const distr_end = width - 350;
 		const distr_interval = distr_end / (this.props.cards.length - 1)
 		return <div style={{position: "relative"}}>
@@ -13,7 +12,11 @@ class Hand extends React.Component {
 						top: 0,
 						left: (i * distr_interval) + "px",
 					}}>
-						<Card card={card} scale={2/5} />
+						<Card
+							card={card}
+							onClick={() => this.props.onClick(i)}
+							scale={2/5}
+							selected={i == this.props.selectedIndex} />
 				</div>)}
 		</div>;
 	}

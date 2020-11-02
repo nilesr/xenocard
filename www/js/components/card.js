@@ -13,7 +13,10 @@ class Card extends React.Component {
 				borderRadius: (10*scale) + "px",
 				display: "inline-block",
 			}}
-		/>;
+			onClick={() => { if (this.props.onClick) this.props.onClick(); }}
+		>
+			{this.props.selected ? <CardOverlay /> : null}
+		</div>;
 	}
 }
 

@@ -22,7 +22,7 @@ class Phases extends React.Component {
 				<div style={{
 					position: "absolute",
 					left: 0,
-					top: (200*phase_index/7) + "px",
+					top: (200*(p2 ? 6-phase_index : phase_index)/7) + "px",
 					width: "120px",
 					height: (200/7) - 7.5 + "px",
 					border: "3px solid red",

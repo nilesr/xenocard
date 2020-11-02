@@ -6,3 +6,12 @@
 		border-color: lime;
 	}
 }
+
+@keyframes fade_opacity {
+	0% {
+		opacity: 0.25;
+	}
+	100% {
+		opacity: 0.50;
+	}
+}

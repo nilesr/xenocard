@@ -265,7 +265,7 @@ void Game::run() {
 					break;
 				}
 				auto di = dynamic_cast<DiscardInstruction*>(instruction.get());
-				if (di->handIndex < 0 || di->handIndex >= 6) {
+				if (di->handIndex < 0 || di->handIndex >= plr.hand.size()) {
 					plr.sendError("I couldn't find a card at that index in your hand");
 					break;
 				}
