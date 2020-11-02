@@ -71,8 +71,8 @@ class App extends React.Component {
 	onMessage(data) {
 		// debug
 		this.setState(s => {return {log: s.log.concat([data])}; });
-		if (data.method) {
-			if (data.method == "error") {
+		if (data.event) {
+			if (data.event == "error") {
 				this.recvError(data);
 			} else {
 				this.recvNotice(data);
