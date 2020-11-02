@@ -38,12 +38,29 @@ class App extends React.Component {
 				)}
 			</ul>
 			<Field /> {/* TODO */}
-			<Phases player={this.state.player} phase={this.state.phase} />
-			<Buttons
-				player={this.state.player}
-				phase={this.state.phase}
-				sendInstruction={this.sendInstruction} />
-			<Hand cards={this.state.hand} />
+			<div style={{
+				position: "absolute",
+				bottom: 0,
+				left: 0,
+				width: "100%",
+				height: "200px",
+				display: 'grid',
+				gridTemplateColumns: "150px 300px 1fr",
+				gridTemplateRows: '100%',
+			}}>
+				<div>
+					<Phases player={this.state.player} phase={this.state.phase} />
+				</div>
+				<div>
+					<Buttons
+						player={this.state.player}
+						phase={this.state.phase}
+						sendInstruction={this.sendInstruction} />
+				</div>
+				<div>
+					<Hand cards={this.state.hand} />
+				</div>
+			</div>
 		</div>;
 	}
 	onMessage(data) {

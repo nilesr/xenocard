@@ -10,7 +10,7 @@ class Buttons extends React.Component {
 			<div>
 				{playerSideForPhase(this.props.phase) == this.props.player
 					? <button onClick={this.endPhase}>End Phase</button>
-					: null}
+					: "Waiting for the other player to end the phase"}
 			</div>
 			<div>
 				{["P1_SHUFFLE", "P2_SHUFFLE"].includes(this.props.phase) && (playerSideForPhase(this.props.phase) == this.props.player)
