@@ -62,7 +62,7 @@ std::unique_ptr<Instruction> Connection::readInstruction() {
 
 void Connection::sendError(std::string what) {
 	json_t* obj = json_object();
-	json_object_set(obj, "method", json_string("error"));
+	json_object_set(obj, "event", json_string("error"));
 	json_object_set(obj, "error", json_string(what.c_str()));
 	char* stringified = json_dumps(obj, 0);
 	int written = write(this->fd, stringified, strlen(stringified));
@@ -81,7 +81,8 @@ void Connection::notify(json_t* what) {
 }
 
 void Connection::sendGame(SerializedGame game) {
-	auto packed = json_pack("{s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i, s:i}",
+	auto packed = json_pack("{s:s, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i, s:i}",
+			"event", "state",
 			"player", game.player.c_str(),
 			"turn", game.turn,
 			"phase", game.phase.c_str(),

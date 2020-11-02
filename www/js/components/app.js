@@ -71,14 +71,12 @@ class App extends React.Component {
 	onMessage(data) {
 		// debug
 		this.setState(s => {return {log: s.log.concat([data])}; });
-		if (data.event) {
-			if (data.event == "error") {
-				this.recvError(data);
-			} else {
-				this.recvNotice(data);
-			}
-		} else {
+		if (data.event == "error") {
+			this.recvError(data);
+		} else if (data.event == "state") {
 			this.recvGame(data);
+		} else {
+			this.recvNotice(data);
 		}
 	}
 	recvError(data) {
@@ -112,7 +110,7 @@ class App extends React.Component {
 			enemy_deck_size: game.enemy_deck_size,
 			enemy_junk_size: game.enemy_junk_size,
 			enemy_lost_size: game.enemy_lost_size,
-		})
+		});
 	}
 	onHandClick = (handIndex) => {
 		this.setState(s => {
@@ -139,7 +137,7 @@ class App extends React.Component {
 				selection_state: "play",
 				selection_hand_index: handIndex,
 			};
-		})
+		});
 	}
 };
 

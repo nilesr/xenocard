@@ -1,4 +1,5 @@
 window.v = false;
+window.card = null;
 
 function makeListener(down) {
 	return function keychange(event) {
@@ -7,7 +8,9 @@ function makeListener(down) {
 		var x = event.key;
 		if (x == "v") {
 			window.v = down;
-			console.log("v: " + window.v);
+			Array.prototype.slice.call(document.querySelectorAll(".hovercard"), 0).forEach(e => {
+				e.style.display = down ? "block" : "none";
+			});
 		}
 	}
 }
