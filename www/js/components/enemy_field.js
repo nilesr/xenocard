@@ -15,6 +15,14 @@ class EnemyField extends React.Component {
 			<FieldCard height={this.props.height} x={1516} y={766} card={this.props.cards.BATTLEFIELD[2]} />
 			<FieldCard height={this.props.height} x={1075} y={1085} card={this.props.cards.BATTLEFIELD[1]} />
 			<FieldCard height={this.props.height} x={1516} y={1085} card={this.props.cards.BATTLEFIELD[0]} />
+
+			{/* junk */}
+			<FieldCard height={this.props.height} x={684} y={148} card={this.props.junk[0]} />
+			{/* deck */}
+			<FieldCard height={this.props.height} x={1293} y={310} card={null} />
+			{/* lost */}
+			<FieldCard height={this.props.height} x={1902} y={148} card={null} />
+
 		</>;
 	}
 }

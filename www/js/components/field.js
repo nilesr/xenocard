@@ -13,10 +13,12 @@ class Field extends React.Component {
 			}} />
 			<EnemyField
 				height={this.props.height}
-				cards={this.props.field[enemy_player]} />
+				cards={this.props.field[enemy_player]}
+				junk={[]} />
 			<MyField
 				height={this.props.height}
-				cards={this.props.field[this.props.player]} />
+				cards={this.props.field[this.props.player]}
+				junk={[]} />
 		</div>;
 	}
 }

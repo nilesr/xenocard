@@ -15,6 +15,14 @@ class MyField extends React.Component {
 			<FieldCard height={this.props.height} x={1516} y={3000-300- 766+5} card={this.props.cards.BATTLEFIELD[3]} />
 			<FieldCard height={this.props.height} x={1075} y={3000-300-1085+5} card={this.props.cards.BATTLEFIELD[0]} />
 			<FieldCard height={this.props.height} x={1516} y={3000-300-1085+5} card={this.props.cards.BATTLEFIELD[1]} />
+
+			{/* junk */}
+			<FieldCard height={this.props.height} x={684} y={2556} card={this.props.junk[0]} />
+			{/* deck */}
+			<FieldCard height={this.props.height} x={1293} y={2394} card={null} />
+			{/* lost */}
+			<FieldCard height={this.props.height} x={1902} y={2556} card={null} />
+
 		</>;
 	}
 }
