@@ -16,7 +16,7 @@ class Field extends React.Component {
 				cards={this.props.field[enemy_player]} />
 			<MyField
 				height={this.props.height}
-				cards={this.props.field[this.props.playerl]} />
+				cards={this.props.field[this.props.player]} />
 		</div>;
 	}
 }
