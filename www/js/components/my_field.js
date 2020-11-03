@@ -11,12 +11,10 @@ class MyField extends React.Component {
 			<FieldCard height={this.props.height} x={2455} y={800+1430} card={this.props.cards.STANDBY[2]} />
 			<FieldCard height={this.props.height} x={2455} y={1127+1430} card={this.props.cards.STANDBY[3]} />
 
-			{/*
-			<FieldCard height={this.props.height} x={1075} y={766} card={this.props.cards.BATTLEFIELD[3]} />
-			<FieldCard height={this.props.height} x={1516} y={766} card={this.props.cards.BATTLEFIELD[2]} />
-			<FieldCard height={this.props.height} x={1075} y={1085} card={this.props.cards.BATTLEFIELD[1]} />
-			<FieldCard height={this.props.height} x={1516} y={1085} card={this.props.cards.BATTLEFIELD[0]} />
-			*/}
+			<FieldCard height={this.props.height} x={1075} y={3000-300- 766+5} card={this.props.cards.BATTLEFIELD[2]} />
+			<FieldCard height={this.props.height} x={1516} y={3000-300- 766+5} card={this.props.cards.BATTLEFIELD[3]} />
+			<FieldCard height={this.props.height} x={1075} y={3000-300-1085+5} card={this.props.cards.BATTLEFIELD[0]} />
+			<FieldCard height={this.props.height} x={1516} y={3000-300-1085+5} card={this.props.cards.BATTLEFIELD[1]} />
 		</>;
 	}
 }
