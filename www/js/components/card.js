@@ -25,7 +25,7 @@ class Card extends React.Component {
 				onMouseLeave={() => this.setState({mouseover: false})}
 			>
 				{this.props.selected ? <CardOverlay /> : null}
-			</div>;
+			</div>
 			{this.state.mouseover
 				? <div style={{
 						position: "fixed",
