@@ -6,24 +6,25 @@ class Card extends React.Component {
 		};
 	}
 	render() {
-		const card = this.props.card;
-		const position = card.image_location;
 		const scale = this.props.scale || 1;
+		const style = {
+			width: (688*scale) + "px",
+			height: (488*scale) + "px",
+			borderRadius: (15*scale) + "px",
+			display: "inline-block",
+		};
+		if (this.props.card) {
+			const position = this.props.card.image_location;
+			style.backgroundImage = "url(images/cards" + position.set + ".jpg)";
+			style.backgroundPosition = "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px";
+			style.backgroundSize = (7000*scale) + "px";
+		}
 		// TODO: e, down, weapon, hover, onclick
 		return <>
-				<div style={{
-					backgroundImage: "url(images/cards" + position.set + ".jpg)",
-					backgroundPosition: "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px",
-					backgroundSize: (7000*scale) + "px",
-					width: (688*scale) + "px",
-					height: (488*scale) + "px",
-					borderRadius: (15*scale) + "px",
-					display: "inline-block",
-				}}
+				<div style={style}
 				onClick={() => { if (this.props.onClick) this.props.onClick(); }}
 				onMouseEnter={() => this.setState({mouseover: true})}
-				onMouseLeave={() => this.setState({mouseover: false})}
-			>
+				onMouseLeave={() => this.setState({mouseover: false})}>
 				{this.props.selected ? <CardOverlay /> : null}
 			</div>
 			{this.state.mouseover
