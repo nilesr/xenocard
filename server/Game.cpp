@@ -229,7 +229,7 @@ void Game::run() {
 			break;
 		case InstructionType::MOVE:
 			{
-				if (this->phase != Phase::P1_MOVE && this->phase != Phase::P1_MOVE) {
+				if (this->phase != Phase::P1_MOVE && this->phase != Phase::P2_MOVE) {
 					plr.sendError("You must be in the move phase to move a card");
 					break;
 				}

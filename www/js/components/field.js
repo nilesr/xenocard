@@ -23,7 +23,13 @@ class Field extends React.Component {
 			<MyField
 				height={this.props.height}
 				cards={this.props.field[this.props.player]}
-				junk={[]} />
+				junk={[]}  // TODO
+				player={this.props.player}
+				selectedPlayer={this.props.selectedPlayer}
+				selectedFieldSegment={this.props.selectedFieldSegment}
+				selectedIndex={this.props.selectedIndex}
+				onCardClick={this.makeCardClickHandler(this.props.player)} />
+			/>
 		</div>;
 	}
 	makeCardClickHandler(player) {
