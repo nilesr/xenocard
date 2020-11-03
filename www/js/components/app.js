@@ -1,7 +1,7 @@
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		const ws = new WebSocket('ws://localhost:8080/');
+		const ws = new WebSocket('ws://'+window.location.host+'/');
 		ws.onopen = () => this.setState({connected: true});
 		ws.onclose = () => alert('Disconnected');
 		ws.onmessage = (event) => this.onMessage(JSON.parse(event.data));
