@@ -1,3 +1,11 @@
+const NULL_SELECTION = {
+	selection_state: null,
+	selection_hand_index: -1,
+	selection_player: null,
+	selection_field_segment: null,
+	selection_index: -1,
+};
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,6 +30,9 @@ class App extends React.Component {
 			enemy_lost_size: 0,
 			selection_state: null,
 			selection_hand_index: -1,
+			selection_player: null,
+			selection_field_segment: null,
+			selection_index: -1,
 		};
 	}
 	render() {
@@ -51,6 +62,10 @@ class App extends React.Component {
 					enemyDeckSize={this.state.enemy_deck_size}
 					enemyJunkSize={this.state.enemy_junk_size}
 					enemyLostSize={this.state.enemy_lost_size}
+					selectedPlayer={this.state.selection_player}
+					selectedFieldSegment={this.state.selection_field_segment}
+					selectedIndex={this.state.selection_index}
+					onCardClick={this.onFieldCardClicked}
 				/>
 			</div>
 			<div style={{
@@ -126,12 +141,12 @@ class App extends React.Component {
 	onHandClick = (handIndex) => {
 		this.setState(s => {
 			if (s.selection_state == "move") {
-				// no effect
-				return {};
+				// no effect, cancel selection
+				return NULL_SELECTION;
 			}
 			if (s.selection_state == "play") {
 				// no effect, cancel selection
-				return {selection_state: null, selection_hand_index: -1};
+				return NULL_SELECTION;
 			}
 			const card = s.hand[handIndex];
 			if (s.phase == s.player + "_ADJUST") {
@@ -147,6 +162,46 @@ class App extends React.Component {
 			return {
 				selection_state: "play",
 				selection_hand_index: handIndex,
+			};
+		});
+	}
+	onFieldCardClicked = (player, fs, index) => {
+		this.setState(s => {
+			if (player == s.selection_player && fs == s.selection_field_segment && index == s.selection_index) {
+				// No effect, cancel selection
+				return NULL_SELECTION;
+			}
+			if (s.selection_state == "move") {
+				this.sendInstruction("move", {
+					start: {
+						player_side: s.selection_player,
+						field_segment: s.selection_field_segment,
+						index: s.selection_index,
+					},
+					end: {
+						player_side: player,
+						field_segment: fs,
+						index: index,
+					}
+				})
+				return NULL_SELECTION;
+			}
+			if (s.selection_state == "play") {
+				this.sendInstruction("play", {
+					hand_index: s.selection_hand_index,
+					position: {
+						player_side: player,
+						field_segment: fs,
+						index,
+					},
+				})
+				return NULL_SELECTION;
+			}
+			return {
+				selection_state: "move",
+				selection_player: player,
+				selection_field_segment: fs,
+				selection_index: index,
 			};
 		});
 	}

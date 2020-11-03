@@ -14,12 +14,20 @@ class Field extends React.Component {
 			<EnemyField
 				height={this.props.height}
 				cards={this.props.field[enemy_player]}
-				junk={[]} />
+				junk={this.props.junk} 
+				player={enemy_player}
+				selectedPlayer={this.props.selectedPlayer}
+				selectedFieldSegment={this.props.selectedFieldSegment}
+				selectedIndex={this.props.selectedIndex}
+				onCardClick={this.makeCardClickHandler(enemy_player)} />
 			<MyField
 				height={this.props.height}
 				cards={this.props.field[this.props.player]}
 				junk={[]} />
 		</div>;
+	}
+	makeCardClickHandler(player) {
+		return (fs, index) => this.props.onCardClick(player, fs, index);
 	}
 }
 

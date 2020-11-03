@@ -36,7 +36,7 @@ class Card extends React.Component {
 						display: window.v ? "block" : "none"
 					}}
 					className="hovercard">
-						<Card card={this.props.card} scale={1.6} />
+						<Card card={this.props.card} scale={(window.innerHeight - 200) / 500} />
 					</div>
 				: null}
 		</>

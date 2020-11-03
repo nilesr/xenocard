@@ -7,7 +7,8 @@ const FieldCard = function(props) {
 		<Card
 			card={props.card || {image_location: {set: 1, top: 0, left: 0}}}
 			scale={((300/3000) * props.height)/500}
-			onClick={props.onClick} />
+			onClick={props.onClick}
+			selected={props.selected} />
 	</div>;
 };
 
