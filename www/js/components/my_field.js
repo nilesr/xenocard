@@ -92,7 +92,7 @@ class MyField extends React.Component {
 				selected={this.isSelected("BATTLEFIELD", 1)} />
 
 			{/* junk */}
-			<FieldCard height={this.props.height} x={1902} y={2556} card={this.props.junk[0]} />
+			<FieldCard height={this.props.height} x={1902} y={2556} card={this.props.junk[this.props.junk.length - 1]} />
 			{/* deck */}
 			<FieldCard height={this.props.height} x={1293} y={2394} card={null} />
 			{/* lost */}

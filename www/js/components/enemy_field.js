@@ -92,7 +92,7 @@ class EnemyField extends React.Component {
 				selected={this.isSelected("BATTLEFIELD", 0)} />
 
 			{/* junk */}
-			<FieldCard height={this.props.height} x={684} y={148} card={this.props.junk[0]} />
+			<FieldCard height={this.props.height} x={684} y={148} card={this.props.junk[this.props.junk.length - 1]} />
 			{/* deck */}
 			<FieldCard height={this.props.height} x={1293} y={310} card={null} />
 			{/* lost */}

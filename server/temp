@@ -8,3 +8,7 @@ discarded in adjust phase -> junk
 junk is visible, lost has only the count visible
 
 
+
+Down goes away at the beginning of the owner's adjust phase
+cards that attack every other turn do not recharge when not on the battlefield
+
