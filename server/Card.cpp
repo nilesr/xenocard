@@ -63,7 +63,7 @@ void BattleCard::serialize(json_t* obj) {
 	this->Card::serialize(obj);
 	json_object_set(obj, "battle_type", json_string(battleCardTypeToString(this->getBattleType()).c_str()));
 	json_object_set(obj, "attack_pattern", json_string(attackPatternToString(this->getAttackPattern()).c_str()));
-	json_object_set(obj, "max_health", json_integer(this->max_health));
+	json_object_set(obj, "max_health", json_integer(this->getMaxHealth()));
 	json_object_set(obj, "health", json_integer(this->health));
 	json_object_set(obj, "e", json_boolean(this->e));
 	if (this->weapon.has_value()) {

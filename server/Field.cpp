@@ -83,7 +83,7 @@ PlayerIterator Field::iterateForPlayer(PlayerSide player) {
 }
 
 
-bool PlayerIterator::operator!=(PlayerIterator& other) {
+bool PlayerIterator::operator!=(const PlayerIterator& other) {
 	return other.fs != this->fs && other.index != this->index;
 }
 

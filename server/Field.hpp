@@ -42,16 +42,15 @@ public:
 	PlayerIterator begin();
 	PlayerIterator end();
 	PlayerIterator& operator++();
-	bool operator!=(PlayerIterator& other);
+	bool operator!=(const PlayerIterator& other);
 	std::shared_ptr<Card> operator*();
 };
 
 class Field {
-private:
+public:
 	PlayerField p1;
 	PlayerField p2;
 
-public:
 	std::optional<std::shared_ptr<Card>>& findCard(Position pos);
 
 	json_t* serialize();

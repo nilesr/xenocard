@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Battle.hpp"
 #include <iostream>
 
 void Game::notify(std::string event, json_t* extras) {
@@ -47,6 +48,10 @@ void Game::onPhaseBegin() {
 				battleCardPtr->unsetE();
 			}
 		}
+		auto& other_player = current_player == PlayerSide::P1 ? this->p2 : this->p1;
+		auto& field = current_player == PlayerSide::P1 ? this->field.p1 : this->field.p2;
+		auto& enemy_field = current_player == PlayerSide::P1 ? this->field.p2 : this->field.p1;
+		doBattle(plr, other_player, field, enemy_field);
 	}
 }
 

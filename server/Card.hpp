@@ -65,21 +65,29 @@ public:
 		return CardType::BATTLE;
 	}
 	virtual BattleCardType getBattleType() = 0;
-	// TODO: getAttack
 	AttackPattern getAttackPattern();
 	std::optional<std::shared_ptr<WeaponCard>> weapon;
-	virtual void setE() { this->e = 1; };
-	virtual void unsetE() { this->e = 0; };
+	virtual void setE() { this->e = true; };
+	virtual void unsetE() { this->e = false; };
 	virtual bool getE() { return this->e; };
 	virtual bool countsTowardsLimit() { return this->getBattleType() != BattleCardType::REALIAN; };
+	virtual int getMaxHealth() = 0;
+	int getHealth() { return this->health; };
+	// for std::nullopt, return the damage that should be dealt to the opponents deck
+	virtual int getDamageFor(std::optional<std::shared_ptr<BattleCard>> other) = 0;
+	// returns the amount of health remaining, or 0 if the card is now dead
+	virtual int takeDamage(int damage) {
+		this->health -= damage;
+		return this->health < 0 ? 0 : this->health;
+	};
 protected:
-	int e = 0;
+	bool e = 0;
+	int health;
+
+	BattleCard(int max_health): health(max_health) {};
 	virtual AttackPattern getDefaultAttackPattern() = 0;
 
 	virtual void serialize(json_t* obj) override;
-
-	int max_health;
-	int health;
 };
 
 
