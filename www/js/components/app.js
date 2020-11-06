@@ -47,6 +47,7 @@ class App extends React.Component {
 		const field_width = window.innerHeight - 150;
 		const field_x_offset = (window.innerWidth - field_width)/2;
 		return <div>
+			<EnemyHand cards={this.state.enemy_hand_size} />
 			<div style={{
 				position: "fixed",
 				top: 0,

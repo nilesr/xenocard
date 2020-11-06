@@ -7,8 +7,8 @@ class Card extends React.Component {
 	}
 	render() {
 		const scale = this.props.scale || 1;
-		const width = 668*scale;
-		const height = 488*scale;
+		const width = (700-12)*scale;
+		const height = (500-12)*scale;
 		const style = {
 			width: width + "px",
 			height: height + "px",
