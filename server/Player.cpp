@@ -17,10 +17,6 @@ void Player::sendError(std::string what) {
 	this->conn.sendError(what);
 }
 
-void Player::notify(json_t* object) {
-	this->conn.notify(object);
-}
-
 
 void Player::dealInitialHand() {
 	this->deck.insert(this->deck.end(), this->hand.begin(), this->hand.end());

@@ -3,11 +3,13 @@
 #include <iostream>
 
 void Game::notify(std::string event, json_t* extras) {
-	if (extras == nullptr) extras = json_object();
-	json_object_set(extras, "event", json_string(event.c_str()));
-	this->p1.notify(extras);
-	this->p2.notify(extras);
-	json_decref(extras);
+	if (extras != nullptr) {
+		json_incref(extras);
+	}
+	auto p1game = this->serializeForPlayer(PlayerSide::P1, event, extras);
+	this->p1.sendState(p1game);
+	auto p2game = this->serializeForPlayer(PlayerSide::P2, event, extras);
+	this->p2.sendState(p2game);
 }
 
 bool Game::checkRequirements(CardRequirements reqs) {
@@ -36,6 +38,7 @@ void Game::onPhaseBegin() {
 	if (this->phase == Phase::P1_DRAW) {
 		this->turn++;
 	}
+	this->notify("phase", nullptr);
 	if (this->phase == Phase::P1_DRAW || this->phase == Phase::P2_DRAW) {
 		plr.drawCard();
 		this->notify("draw_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
@@ -79,11 +82,11 @@ std::tuple<PlayerSide, Player&> Game::getCurrentPlayer() {
 void Game::run() {
 	this->p1.dealInitialHand();
 	this->p2.dealInitialHand();
+	this->notify("game_start", nullptr);
 	auto shuffles = 0;
 	bool has_played_battle_card = false;
 	bool has_played_situation_card = false;
 	while (true) {
-		this->sendState();
 		auto [current_player, plr] = this->getCurrentPlayer();
 		auto instruction = plr.recvInstruction();
 		switch (instruction->getType()) {
@@ -288,17 +291,12 @@ void Game::run() {
 	}
 }
 
-void Game::sendState() {
-	auto p1game = this->serializeForPlayer(PlayerSide::P1);
-	p1.sendState(p1game);
-	auto p2game = this->serializeForPlayer(PlayerSide::P2);
-	p2.sendState(p2game);
-}
-
-SerializedGame Game::serializeForPlayer(PlayerSide player) {
+SerializedGame Game::serializeForPlayer(PlayerSide player, std::string method, json_t* extras) {
 	auto& plr = player == PlayerSide::P1 ? this->p1 : this->p2;
 	auto& enemy = player == PlayerSide::P1 ? this->p2 : this->p1;
 	return SerializedGame{
+		method,
+		extras,
 		playerSideToString(player),
 		this->turn,
 		phaseToString(this->phase),

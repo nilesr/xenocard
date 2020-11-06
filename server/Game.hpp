@@ -26,8 +26,6 @@ private:
 	bool checkRequirements(CardRequirements reqs);
 	void onPhaseBegin();
 	void notify(std::string event, json_t* extras);
-	void sendState();
 	void payCost(int n);
-	SerializedGame serializeForPlayer(PlayerSide player);
-
+	SerializedGame serializeForPlayer(PlayerSide player, std::string method, json_t* extras);
 };

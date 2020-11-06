@@ -2,6 +2,8 @@
 #include <jansson.h>
 
 struct SerializedGame {
+	std::string event;
+	json_t* extras;
 	std::string player;
 	int turn;
 	std::string phase;

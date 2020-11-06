@@ -72,17 +72,10 @@ void Connection::sendError(std::string what) {
 	json_decref(obj);
 }
 
-void Connection::notify(json_t* what) {
-	char* stringified = json_dumps(what, 0);
-	int written = write(this->fd, stringified, strlen(stringified));
-	write(this->fd, "\n", 1);
-	std::cout << "Wrote " << written << " bytes back to the client" << std::endl;
-	free(stringified);
-}
-
 void Connection::sendGame(SerializedGame game) {
-	auto packed = json_pack("{s:s, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i, s:i}",
-			"event", "state",
+	auto packed = json_pack("{s:s, s:o?, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i, s:i}",
+			"event", game.event.c_str(),
+			"extras", game.extras,
 			"player", game.player.c_str(),
 			"turn", game.turn,
 			"phase", game.phase.c_str(),

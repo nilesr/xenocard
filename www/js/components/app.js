@@ -16,6 +16,8 @@ class App extends React.Component {
 		this.state = {
 			connected: false,
 			ws: ws,
+			animationInProgress: false,
+			nextStates: [],
 			player: null,
 			turn: 0,
 			phase: null,
@@ -99,19 +101,13 @@ class App extends React.Component {
 	onMessage(data) {
 		if (data.event == "error") {
 			this.recvError(data);
-		} else if (data.event == "state") {
-			this.recvGame(data);
 		} else {
-			this.recvNotice(data);
+			this.recvEvent(data);
 		}
 	}
 	recvError(data) {
 		alert(data.error);
 	}
-	recvNotice(data) {
-		console.log(data);
-	}
-
 	sendInstruction = (method, extras) => {
 		extras ||= {};
 		extras.method = method;
@@ -122,20 +118,43 @@ class App extends React.Component {
 		}
 		this.state.ws.send(raw);
 	}
-	recvGame(game) {
-		this.setState({
-			player: game.player,
-			turn: game.turn,
-			phase: game.phase,
-			field: game.field,
-			hand: game.hand,
-			junk: game.junk,
-			deck_size: game.deck_size,
-			lost_size: game.lost_size,
-			enemy_hand_size: game.enemy_hand_size,
-			enemy_deck_size: game.enemy_deck_size,
-			enemy_junk_size: game.enemy_junk_size,
-			enemy_lost_size: game.enemy_lost_size,
+	recvEvent(game) {
+		this.setState(s => {
+			return {nextStates: s.nextStates.concat([game])};
+		}, () => this.startAnimation());
+	}
+	startAnimation() {
+		if (this.state.animationInProgress) {
+			return;
+		}
+		this.setState({animationInProgress: true}, () => {
+			// TODO actually animate something
+			this.completeEvent()
+		});
+	}
+	completeEvent() {
+		this.setState(s => {
+			const game = s.nextStates[0];
+			return {
+				animationInProgress: false,
+				nextStates: s.nextStates.slice(1),
+				player: game.player,
+				turn: game.turn,
+				phase: game.phase,
+				field: game.field,
+				hand: game.hand,
+				junk: game.junk,
+				deck_size: game.deck_size,
+				lost_size: game.lost_size,
+				enemy_hand_size: game.enemy_hand_size,
+				enemy_deck_size: game.enemy_deck_size,
+				enemy_junk_size: game.enemy_junk_size,
+				enemy_lost_size: game.enemy_lost_size,
+			}
+		}, () => {
+			if (this.state.nextStates.length > 0) {
+				this.startAnimation();
+			}
 		});
 	}
 	onHandClick = (handIndex) => {
