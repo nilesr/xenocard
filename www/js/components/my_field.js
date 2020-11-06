@@ -38,28 +38,32 @@ class MyField extends React.Component {
 				y={148+1430}
 				card={this.props.cards.STANDBY[0]}
 				onClick={() => this.props.onCardClick("STANDBY", 0)}
-				selected={this.isSelected("STANDBY", 0)} />
+				selected={this.isSelected("STANDBY", 0)}
+				displayHealth={true} />
 			<FieldCard
 				height={this.props.height}
 				x={130}
 				y={474+1430}
 				card={this.props.cards.STANDBY[1]}
 				onClick={() => this.props.onCardClick("STANDBY", 1)}
-				selected={this.isSelected("STANDBY", 1)} />
+				selected={this.isSelected("STANDBY", 1)}
+				displayHealth={true} />
 			<FieldCard
 				height={this.props.height}
 				x={130}
 				y={800+1430}
 				card={this.props.cards.STANDBY[2]}
 				onClick={() => this.props.onCardClick("STANDBY", 2)}
-				selected={this.isSelected("STANDBY", 2)} />
+				selected={this.isSelected("STANDBY", 2)}
+				displayHealth={true} />
 			<FieldCard
 				height={this.props.height}
 				x={130}
 				y={1127+1430}
 				card={this.props.cards.STANDBY[3]}
 				onClick={() => this.props.onCardClick("STANDBY", 3)}
-				selected={this.isSelected("STANDBY", 3)} />
+				selected={this.isSelected("STANDBY", 3)}
+				displayHealth={true} />
 
 			{/* Battlefield */}
 			<FieldCard

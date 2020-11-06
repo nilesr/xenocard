@@ -8,7 +8,8 @@ const FieldCard = function(props) {
 			card={props.card}
 			scale={((300/3000) * props.height)/500}
 			onClick={props.onClick}
-			selected={props.selected} />
+			selected={props.selected}
+			displayHealth={props.displayHealth} />
 	</div>;
 };
 

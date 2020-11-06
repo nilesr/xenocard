@@ -16,6 +16,7 @@ class Card extends React.Component {
 			display: "inline-block",
 		};
 		let e = null;
+		let health = null;
 		if (this.props.card) {
 			const position = this.props.card.image_location;
 			style.backgroundImage = "url(images/cards" + position.set + ".jpg)";
@@ -32,6 +33,11 @@ class Card extends React.Component {
 						opacity: 0.55
 					}} />;
 			}
+			if (this.props.displayHealth) {
+				health = <div style={{position: "absolute", bottom: "12px", right: 0, color: "yellow", height: "25%", textAlign: "right", fontSize: (height*0.3) + "px"}}>
+					{this.props.card.health}
+				</div>
+			}
 		}
 		// TODO: down, weapon, damage counters if in standby
 		return <>
@@ -41,6 +47,7 @@ class Card extends React.Component {
 				onMouseLeave={() => this.setState({mouseover: false})}>
 				{this.props.selected ? <CardOverlay /> : null}
 				{e}
+				{health}
 			</div>
 			{this.state.mouseover
 				? <div style={{
