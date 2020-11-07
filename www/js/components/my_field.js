@@ -73,6 +73,12 @@ class MyField extends React.Component {
 				card={this.props.cards.BATTLEFIELD[2]}
 				onClick={() => this.props.onCardClick("BATTLEFIELD", 2)}
 				selected={this.isSelected("BATTLEFIELD", 2)} />
+			<BattlefieldInfo
+				height={this.props.height}
+				x={636}
+				y={3000-300-766+5}
+				card={this.props.cards.BATTLEFIELD[2]} />
+
 			<FieldCard
 				height={this.props.height}
 				x={1516}
@@ -80,6 +86,12 @@ class MyField extends React.Component {
 				card={this.props.cards.BATTLEFIELD[3]}
 				onClick={() => this.props.onCardClick("BATTLEFIELD", 3)}
 				selected={this.isSelected("BATTLEFIELD", 3)} />
+			<BattlefieldInfo
+				height={this.props.height}
+				x={1952}
+				y={3000-300-766+5}
+				card={this.props.cards.BATTLEFIELD[3]} />
+
 			<FieldCard
 				height={this.props.height}
 				x={1075}
@@ -87,6 +99,12 @@ class MyField extends React.Component {
 				card={this.props.cards.BATTLEFIELD[0]}
 				onClick={() => this.props.onCardClick("BATTLEFIELD", 0)}
 				selected={this.isSelected("BATTLEFIELD", 0)} />
+			<BattlefieldInfo
+				height={this.props.height}
+				x={636}
+				y={3000-300-1085+5}
+				card={this.props.cards.BATTLEFIELD[0]} />
+
 			<FieldCard
 				height={this.props.height}
 				x={1516}
@@ -94,6 +112,11 @@ class MyField extends React.Component {
 				card={this.props.cards.BATTLEFIELD[1]}
 				onClick={() => this.props.onCardClick("BATTLEFIELD", 1)}
 				selected={this.isSelected("BATTLEFIELD", 1)} />
+			<BattlefieldInfo
+				height={this.props.height}
+				x={1952}
+				y={3000-300-1085+5}
+				card={this.props.cards.BATTLEFIELD[1]} />
 
 			{/* junk */}
 			<FieldCard height={this.props.height} x={1902} y={2556} card={this.props.junk[this.props.junk.length - 1]} />
