@@ -27,6 +27,9 @@ class Card extends React.Component {
 				style.backgroundPosition = "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px";
 				style.backgroundSize = (7000*scale) + "px";
 			}
+			if (this.props.rotate) {
+				style.transform = "rotate(180deg)";
+			}
 			if (this.props.card.e) {
 				e = <img
 					src="images/e.png"
