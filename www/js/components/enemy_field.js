@@ -121,9 +121,9 @@ class EnemyField extends React.Component {
 			{/* junk */}
 			<FieldCard height={this.props.height} x={684} y={148} card={this.props.junk[this.props.junk.length - 1]} />
 			{/* deck */}
-			<FieldCard height={this.props.height} x={1293} y={310} card={null} />
+			<FieldCard height={this.props.height} x={1293} y={310} card={this.props.deckSize == 0 ? null : FLIPPED_CARD} />
 			{/* lost */}
-			<FieldCard height={this.props.height} x={1902} y={148} card={null} />
+			<FieldCard height={this.props.height} x={1902} y={148} card={this.props.lostSize == 0 ? null : FLIPPED_CARD} />
 
 		</>;
 	}

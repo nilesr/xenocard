@@ -14,7 +14,9 @@ class Field extends React.Component {
 			<EnemyField
 				height={this.props.height}
 				cards={this.props.field[enemy_player]}
+				deckSize={this.props.enemyDeckSize}
 				junk={[]}  // TODO
+				lostSize={this.props.enemyLostSize}
 				player={enemy_player}
 				selectedPlayer={this.props.selectedPlayer}
 				selectedFieldSegment={this.props.selectedFieldSegment}
@@ -23,7 +25,9 @@ class Field extends React.Component {
 			<MyField
 				height={this.props.height}
 				cards={this.props.field[this.props.player]}
+				deckSize={this.props.deckSize}
 				junk={this.props.junk}
+				lostSize={this.props.lostSize}
 				player={this.props.player}
 				selectedPlayer={this.props.selectedPlayer}
 				selectedFieldSegment={this.props.selectedFieldSegment}

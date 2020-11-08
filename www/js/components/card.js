@@ -19,9 +19,14 @@ class Card extends React.Component {
 		let health = null;
 		if (this.props.card) {
 			const position = this.props.card.image_location;
-			style.backgroundImage = "url(images/cards" + position.set + ".jpg)";
-			style.backgroundPosition = "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px";
-			style.backgroundSize = (7000*scale) + "px";
+			if (position.set == "flipped_card") {
+				style.backgroundImage = "url(images/flipped_card.png)";
+				style.backgroundSize = "cover";
+			} else {
+				style.backgroundImage = "url(images/cards" + position.set + ".jpg)";
+				style.backgroundPosition = "-" + ((position.left * 700 + 6) * scale) + "px -" + ((position.top * 500 + 6) * scale) + "px";
+				style.backgroundSize = (7000*scale) + "px";
+			}
 			if (this.props.card.e) {
 				e = <img
 					src="images/e.png"
