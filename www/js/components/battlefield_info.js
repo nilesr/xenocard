@@ -10,6 +10,10 @@ const BattlefieldInfo = function(props) {
 		// note to self, do not add padding
 		borderRadius: (15/3000)*props.height + "px",
 	}}>
+		{/* TODO: HP bar with count on the right
+			TODO: ATK stat on the right
+			TODO: Battle card type image in the bottom left
+			TODO: Whatever those blue dots are for */}
 		{props.card.health}/{props.card.max_health}
 		<br />
 		{props.card.attack_pattern}
