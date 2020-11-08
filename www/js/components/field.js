@@ -29,7 +29,6 @@ class Field extends React.Component {
 				selectedFieldSegment={this.props.selectedFieldSegment}
 				selectedIndex={this.props.selectedIndex}
 				onCardClick={this.makeCardClickHandler(this.props.player)} />
-			/>
 		</div>;
 	}
 	makeCardClickHandler(player) {

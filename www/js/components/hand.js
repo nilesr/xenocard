@@ -1,7 +1,7 @@
 class Hand extends React.Component {
 	render() {
 		const width = window.innerWidth - 150 - 300;
-		const distr_end = width - 350;
+		const distr_end = width - (700*(150/500));
 		const distr_interval = distr_end / (this.props.cards.length - 1)
 		return <div style={{position: "relative"}}>
 			{this.props.cards.map((card, i) =>

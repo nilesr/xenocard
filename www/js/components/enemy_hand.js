@@ -1,7 +1,7 @@
 class EnemyHand extends React.Component {
 	render() {
 		const width = window.innerWidth/4;
-		const distr_end = width - 350;
+		const distr_end = width - (700*(100/500));
 		const distr_interval = width / this.props.cards;
 		return <>
 			<div style={{position: "fixed", top: 0, right: 0, width: width + "px", height: "75px"}}>

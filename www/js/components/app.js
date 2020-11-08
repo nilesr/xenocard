@@ -37,6 +37,9 @@ class App extends React.Component {
 			selection_index: -1,
 		};
 	}
+	componentDidMount() {
+		window.addEventListener("resize", () => this.forceUpdate());
+	}
 	render() {
 		if (!this.state.connected) {
 			return "Waiting for connection to open (if it fails you may be staring at this forever)";
