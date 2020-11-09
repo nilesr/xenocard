@@ -307,7 +307,7 @@ SerializedGame Game::serializeForPlayer(PlayerSide player, std::string method, j
 		(int) plr.lost.size(),
 		(int) enemy.hand.size(),
 		(int) enemy.deck.size(),
-		(int) enemy.junk.size(),
+		serializeCards(enemy.junk),
 		(int) enemy.lost.size(),
 	};
 }

@@ -14,7 +14,7 @@ struct SerializedGame {
 	int lostSize;
 	int enemyHandSize;
 	int enemyDeckSize;
-	int enemyJunkSize;
+	json_t* enemyJunk;
 	int enemyLostSize;
 };
 

@@ -15,7 +15,7 @@ class Field extends React.Component {
 				height={this.props.height}
 				cards={this.props.field[enemy_player]}
 				deckSize={this.props.enemyDeckSize}
-				junk={[]}  // TODO
+				junk={this.props.enemyJunk}
 				lostSize={this.props.enemyLostSize}
 				player={enemy_player}
 				selectedPlayer={this.props.selectedPlayer}

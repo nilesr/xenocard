@@ -28,7 +28,7 @@ class App extends React.Component {
 			lost_size: 0,
 			enemy_hand_size: 0,
 			enemy_deck_size: 0,
-			enemy_junk_size: 0,
+			enemy_junk: [],
 			enemy_lost_size: 0,
 			selection_state: null,
 			selection_hand_index: -1,
@@ -66,7 +66,7 @@ class App extends React.Component {
 					deckSize={this.state.deck_size}
 					lostSize={this.state.lost_size}
 					enemyDeckSize={this.state.enemy_deck_size}
-					enemyJunkSize={this.state.enemy_junk_size}
+					enemyJunk={this.state.enemy_junk}
 					enemyLostSize={this.state.enemy_lost_size}
 					selectedPlayer={this.state.selection_player}
 					selectedFieldSegment={this.state.selection_field_segment}
@@ -152,7 +152,7 @@ class App extends React.Component {
 				lost_size: game.lost_size,
 				enemy_hand_size: game.enemy_hand_size,
 				enemy_deck_size: game.enemy_deck_size,
-				enemy_junk_size: game.enemy_junk_size,
+				enemy_junk: game.enemy_junk,
 				enemy_lost_size: game.enemy_lost_size,
 			}
 		}, () => {

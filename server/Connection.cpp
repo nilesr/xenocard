@@ -73,7 +73,7 @@ void Connection::sendError(std::string what) {
 }
 
 void Connection::sendGame(SerializedGame game) {
-	auto packed = json_pack("{s:s, s:o?, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:i, s:i}",
+	auto packed = json_pack("{s:s, s:o?, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:o, s:i}",
 			"event", game.event.c_str(),
 			"extras", game.extras,
 			"player", game.player.c_str(),
@@ -86,7 +86,7 @@ void Connection::sendGame(SerializedGame game) {
 			"lost_size", game.lostSize,
 			"enemy_hand_size", game.enemyHandSize,
 			"enemy_deck_size", game.enemyDeckSize,
-			"enemy_junk_size", game.enemyJunkSize,
+			"enemy_junk", game.enemyJunk,
 			"enemy_lost_size", game.enemyLostSize
 		);
 	char* stringified = json_dumps(packed, 0);
