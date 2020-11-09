@@ -1,10 +1,9 @@
 window.v = false;
-window.card = null;
 
 function makeListener(down) {
 	return function keychange(event) {
-		if (event.repeat) return;
 		event = event || window.event;
+		if (event.repeat) return;
 		var x = event.key;
 		if (x == "v") {
 			window.v = down;

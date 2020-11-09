@@ -50,6 +50,8 @@ class Card extends React.Component {
 		// TODO: down, weapon, damage counters if in standby
 		return <>
 				<div style={style}
+				id={this.props.id}
+				data-scale={scale}
 				onClick={() => { if (this.props.onClick) this.props.onClick(); }}
 				onMouseEnter={() => this.setState({mouseover: true})}
 				onMouseLeave={() => this.setState({mouseover: false})}>

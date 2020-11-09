@@ -73,6 +73,11 @@ void Connection::sendError(std::string what) {
 }
 
 void Connection::sendGame(SerializedGame game) {
+	if (game.extras != nullptr) {
+		char* debug = json_dumps(game.extras, 0);
+		std::cout << "Sending event: " << game.event << ": " << debug << std::endl;
+		free(debug);
+	}
 	auto packed = json_pack("{s:s, s:o?, s:s, s:i, s:s, s:o, s:o, s:o, s:i, s:i, s:i, s:i, s:o, s:i}",
 			"event", game.event.c_str(),
 			"extras", game.extras,
@@ -90,9 +95,8 @@ void Connection::sendGame(SerializedGame game) {
 			"enemy_lost_size", game.enemyLostSize
 		);
 	char* stringified = json_dumps(packed, 0);
-	int written = write(this->fd, stringified, strlen(stringified));
+	write(this->fd, stringified, strlen(stringified));
 	write(this->fd, "\n", 1);
-	std::cout << "Wrote " << written << " bytes back to the client" << std::endl;
 	free(stringified);
 	json_decref(packed);
 }

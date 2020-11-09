@@ -5,6 +5,7 @@ const FieldCard = function(props) {
 		left: (100*props.x/3000) + "%",
 	}}>
 		<Card
+			id={props.id}
 			card={props.card}
 			scale={((300/3000) * props.height)/500}
 			onClick={props.onClick}

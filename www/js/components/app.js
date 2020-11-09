@@ -123,6 +123,7 @@ class App extends React.Component {
 		this.state.ws.send(raw);
 	}
 	recvEvent(game) {
+		console.log(game);
 		this.setState(s => {
 			return {nextStates: s.nextStates.concat([game])};
 		}, () => this.startAnimation());
@@ -132,8 +133,12 @@ class App extends React.Component {
 			return;
 		}
 		this.setState({animationInProgress: true}, () => {
-			// TODO actually animate something
-			this.completeEvent()
+			const msg = this.state.nextStates[0];
+			if (msg.event == "draw_card") {
+				animate_draw(msg, this.completeEvent.bind(this));
+			} else {
+				this.completeEvent()
+			}
 		});
 	}
 	completeEvent() {
