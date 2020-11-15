@@ -54,7 +54,7 @@ void Game::onPhaseBegin() {
 		auto& other_player = current_player == PlayerSide::P1 ? this->p2 : this->p1;
 		auto& field = current_player == PlayerSide::P1 ? this->field.p1 : this->field.p2;
 		auto& enemy_field = current_player == PlayerSide::P1 ? this->field.p2 : this->field.p1;
-		doBattle(plr, other_player, field, enemy_field);
+		doBattle(*this, plr, other_player, field, enemy_field);
 	}
 }
 
@@ -290,6 +290,26 @@ void Game::run() {
 		// the variables plr and current_player haven't been updated yet
 	}
 }
+
+void Game::destroyCard(const Position cardPosition) {
+	auto& card = this->field.findCard(cardPosition);
+	if (card == std::nullopt) {
+		throw std::logic_error{"Attempted to destroy a card that doesn't exist"};
+	}
+	if ((*card)->getType() != CardType::BATTLE) {
+		throw std::logic_error{"Attempted to destroy a card that isn't a battle card"};
+	}
+	const std::shared_ptr<BattleCard> as_battle_card = std::dynamic_pointer_cast<BattleCard>(*card);
+	auto& unlucky_player = cardPosition.playerSide == PlayerSide::P1 ? this->p1 : this->p2;
+	if (as_battle_card->weapon != std::nullopt) {
+		unlucky_player.junk.push_back(*as_battle_card->weapon);
+		as_battle_card->weapon = std::nullopt;
+	}
+	unlucky_player.junk.push_back(*card);
+	card = std::nullopt;
+	this->notify("card_destroyed", json_pack("{s:o}", "position", serializePosition(cardPosition)));
+}
+
 
 SerializedGame Game::serializeForPlayer(PlayerSide player, std::string method, json_t* extras) {
 	auto& plr = player == PlayerSide::P1 ? this->p1 : this->p2;

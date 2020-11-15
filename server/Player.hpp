@@ -14,12 +14,13 @@
 #include "cards/Curry.hpp"
 
 class Player {
-	const PlayerSide which;
 	Connection conn;
 	Random& random;
 
 public:
-	Player(PlayerSide which, Connection conn, Random& random): which(which), conn(conn), random(random) {
+	const PlayerSide which;
+
+	Player(PlayerSide which, Connection conn, Random& random): conn(conn), random(random), which(which) {
 		// TEMP
 		for (int i = 0; i < 3; i++) deck.push_back(std::make_shared<Realian>());
 		for (int i = 0; i < 3; i++) deck.push_back(std::make_shared<Gun>());

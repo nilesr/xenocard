@@ -1,4 +1,4 @@
-CPPFLAGS=-g -std=gnu++17 -Ivendor/jansson/include -Wall -Wextra
+CPPFLAGS=-g -std=gnu++17 -Ivendor/jansson/include -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-g
 LDLIBS=-Lvendor/jansson/lib -ljansson
 

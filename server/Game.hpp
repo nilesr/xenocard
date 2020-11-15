@@ -21,11 +21,14 @@ public:
 
 	void run();
 
+	void notify(std::string event, json_t* extras);
+
+	void destroyCard(Position cardPosition);
+
 private:
 	std::tuple<PlayerSide, Player&> getCurrentPlayer();
 	bool checkRequirements(CardRequirements reqs);
 	void onPhaseBegin();
-	void notify(std::string event, json_t* extras);
 	void payCost(int n);
 	SerializedGame serializeForPlayer(PlayerSide player, std::string method, json_t* extras);
 };

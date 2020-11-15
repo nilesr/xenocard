@@ -44,6 +44,3 @@ void Player::payCost(int n) {
 		this->deck.pop_back();
 	}
 }
-
-
-

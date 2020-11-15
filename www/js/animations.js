@@ -22,17 +22,20 @@ function animate_draw(notification, callback) {
 				targets: root,
 				easing: "linear",
 				rotateY: 90,
+				duration: 500,
 				complete: function() {
 					ReactDOM.render(<Card card={drawn_card} scale={deck.getAttribute("data-scale")} />, root);
 					anime({
 						targets: root,
 						easing: "linear",
+						duration: 500,
 						rotateY: 0,
 						complete: function() {
 							anime({
 								targets: root,
 								easing: "linear",
 								translateY: 0,
+								duration: 400,
 								translateX: translate_x,
 								complete: function() {
 									// We are done
