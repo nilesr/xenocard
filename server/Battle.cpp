@@ -106,34 +106,44 @@ void doBattle(Game& game, Player& attacker, Player& enemy, PlayerField& attacker
 		game.notify("card_will_do_battle", json_pack("{s:o}",
 			"battlefield_position", serializePosition(source_position)));
 
-		// TODO proper implementation of penetrating damage
-		auto opponents = findOpponents(card, enemyField);
-		for (const auto opp_card : opponents.cards) {
-			auto damage = card.card->getDamageFor(opp_card.card);
-			std::cout << card.card->getName() << " dealing " << damage << " to card " << opp_card.card->getName() << std::endl;
+		int damage;
+		int i = 0;
+		while (true) {
+			auto opponents = findOpponents(card, enemyField);
+			for (const auto opp_card : opponents.cards) {
+				if (i == 0) {
+					damage = card.card->getDamageFor(opp_card.card);
+				}
+				std::cout << card.card->getName() << " dealing " << damage << " to card " << opp_card.card->getName() << std::endl;
 
-			const auto target_position = Position{enemy.which, FieldSegmentEnum::BATTLEFIELD, opp_card.position};
+				const auto target_position = Position{enemy.which, FieldSegmentEnum::BATTLEFIELD, opp_card.position};
 
-			const auto remaining_health = opp_card.card->takeDamage(damage);
-			if (remaining_health <= 0) {
-				game.destroyCard(target_position);
+				const auto [remaining_health, damage_taken] = opp_card.card->takeDamage(damage);
+				damage -= damage_taken;
+
+				game.notify("damage", json_pack("{s:o, s:o, s:i}",
+					"source", serializePosition(source_position),
+					"target", serializePosition(target_position),
+					"damage", damage));
+
+				if (remaining_health <= 0) {
+					game.destroyCard(target_position);
+				}
 			}
+			if (opponents.hitsDeck) {
+				auto damage = card.card->getDamageFor(std::nullopt);
+				std::cout << "Will hit deck for: " << damage << std::endl;
 
-			game.notify("damage", json_pack("{s:o, s:o, s:i}",
-				"source", serializePosition(source_position),
-				"target", serializePosition(target_position),
-				"damage", damage));
-		}
-		if (opponents.hitsDeck) {
-			auto damage = card.card->getDamageFor(std::nullopt);
-			std::cout << "Will hit deck for: " << damage << std::endl;
+				enemy.payCost(damage);
 
-			enemy.payCost(damage);
-
-			game.notify("damage_deck", json_pack("{s:o, s:s, s:i}",
-				"source", serializePosition(source_position),
-				"target", playerSideToString(enemy.which).c_str(),
-				"damage", damage));
+				game.notify("damage_deck", json_pack("{s:o, s:s, s:i}",
+					"source", serializePosition(source_position),
+					"target", playerSideToString(enemy.which).c_str(),
+					"damage", damage));
+				break;
+			}
+			if (card.card->getAttackPattern() != AttackPattern::PENETRATING || damage <= 0) break;
+			i++;
 		}
 	}
 }

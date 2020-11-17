@@ -75,10 +75,12 @@ public:
 	int getHealth() { return this->health; };
 	// for std::nullopt, return the damage that should be dealt to the opponents deck
 	virtual int getDamageFor(std::optional<std::shared_ptr<BattleCard>> other) = 0;
-	// returns the amount of health remaining, or 0 if the card is now dead
-	virtual int takeDamage(int damage) {
+	virtual std::tuple<int, int> takeDamage(int damage) {
+		int starting_health = this->health;
 		this->health -= damage;
-		return this->health < 0 ? 0 : this->health;
+		int remaining_health = this->health < 0 ? 0 : this->health;
+		int damage_taken = starting_health - remaining_health;
+		return {remaining_health, damage_taken};
 	};
 protected:
 	bool e = 0;
