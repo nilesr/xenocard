@@ -79,6 +79,7 @@ class Card extends React.Component {
 				onMouseEnter={() => this.setState({mouseover: true})}
 				onMouseLeave={() => this.setState({mouseover: false})}>
 				{this.props.selected ? <CardOverlay /> : null}
+				{this.props.card?.down && !this.props.from_hovercard ? <CardOverlay down={true} /> : null}
 				{e}
 				{health}
 				{weapon}
