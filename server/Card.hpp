@@ -70,6 +70,9 @@ public:
 	virtual void setE() { this->e = true; };
 	virtual void unsetE() { this->e = false; };
 	virtual bool getE() { return this->e; };
+	virtual void setDown() { this->down = true; };
+	virtual void unsetDown() { this->down = false; };
+	virtual bool getDown() { return this->down; };
 	virtual bool countsTowardsLimit() { return this->getBattleType() != BattleCardType::REALIAN; };
 	virtual int getMaxHealth() = 0;
 	int getHealth() { return this->health; };
@@ -84,6 +87,7 @@ public:
 	};
 protected:
 	bool e = 0;
+	bool down = 0;
 	int health;
 
 	BattleCard(int max_health): health(max_health) {};

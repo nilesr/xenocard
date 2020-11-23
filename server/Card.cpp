@@ -66,7 +66,7 @@ void BattleCard::serialize(json_t* obj) {
 	json_object_set(obj, "max_health", json_integer(this->getMaxHealth()));
 	json_object_set(obj, "health", json_integer(this->health));
 	json_object_set(obj, "e", json_boolean(this->e));
-	json_object_set(obj, "down", json_boolean(true)); // TODO
+	json_object_set(obj, "down", json_boolean(this->down));
 	if (this->weapon.has_value()) {
 		json_object_set(obj, "weapon", (*this->weapon)->serialize());
 	}
