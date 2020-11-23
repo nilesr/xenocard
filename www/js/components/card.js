@@ -48,6 +48,7 @@ class Card extends React.Component {
 						width: (width/3) + "px",
 						opacity: 0.55,
 						zIndex: 5,
+						pointerEvents: "none",
 					}} />;
 			}
 			if (this.props.card.weapon && !this.props.from_hovercard) {
@@ -64,7 +65,7 @@ class Card extends React.Component {
 
 			}
 			if (this.props.displayHealth) {
-				health = <div style={{position: "absolute", bottom: "12px", right: 0, color: "yellow", height: "25%", textAlign: "right", fontSize: (height*0.3) + "px", zIndex: 8}}>
+				health = <div style={{position: "absolute", bottom: "12px", right: 0, color: "yellow", height: "25%", textAlign: "right", fontSize: (height*0.3) + "px", zIndex: 8, pointerEvents: "none"}}>
 					{this.props.card.health}
 				</div>
 			}
