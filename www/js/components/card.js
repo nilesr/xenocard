@@ -24,7 +24,7 @@ class Card extends React.Component {
 			// 0: card image itself (default, not set explicitly)
 			// 5: card weapon (if present)
 			// 8: card health (if present)
-			// 9: down overlay (TODO)
+			// 9: down overlay (if present)
 			// 10: card overlay (the green overlay when a card is selected)
 			const position = this.props.card.image_location;
 			if (position.set == "flipped_card") {

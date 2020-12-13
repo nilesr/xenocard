@@ -7,8 +7,8 @@ class Phases extends React.Component {
 				const message = this.props.phase.split("_")[0] != this.props.player
 					? "The other player is re-drawing their hand up to 3 times before the first turn"
 					: "You are re-drawing your hand up to 3 times before the first turn";
-				return <div style={{border: "2px solid white", padding: 5, borderRadius: 5}}>
-					{message}
+				return <div className="panel">
+					<b>Current Phase:</b> {message}
 				</div>;
 			}
 			return "Current phase: " + this.state.phase;

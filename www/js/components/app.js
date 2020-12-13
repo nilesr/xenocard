@@ -49,6 +49,7 @@ class App extends React.Component {
 		}
 		const field_width = window.innerHeight - 150;
 		const field_x_offset = (window.innerWidth - field_width)/2;
+		const perspective_origin = window.innerHeight*3/4; // fucking hack
 		return <div>
 			<EnemyHand cards={this.state.enemy_hand_size} />
 			<div style={{
@@ -57,6 +58,7 @@ class App extends React.Component {
 				left: field_x_offset,
 				width: field_width + "px",
 				height: field_width + "px",
+				perspective: perspective_origin + "px",
 			}}>
 				<Field
 					height={field_width}
@@ -72,6 +74,8 @@ class App extends React.Component {
 					selectedFieldSegment={this.state.selection_field_segment}
 					selectedIndex={this.state.selection_index}
 					onCardClick={this.onFieldCardClicked}
+					rotate={this.props.rotate}
+					tilt={this.props.tilt}
 				/>
 			</div>
 			<div style={{

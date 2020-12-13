@@ -1,7 +1,8 @@
 class Field extends React.Component {
 	render() {
 		const enemy_player = this.props.player == "P1" ? "P2" : "P1";
-		return <div style={{height: "100%", width: "100%"}}>
+		const transform = this.props.tilt ? "rotateX(15deg) scale(0.9) translateY(-50px)" : "";
+		return <div style={{height: "100%", width: "100%", transform}}>
 			<div style={{
 				height: "100%",
 				width: "100%",
@@ -21,7 +22,8 @@ class Field extends React.Component {
 				selectedPlayer={this.props.selectedPlayer}
 				selectedFieldSegment={this.props.selectedFieldSegment}
 				selectedIndex={this.props.selectedIndex}
-				onCardClick={this.makeCardClickHandler(enemy_player)} />
+				onCardClick={this.makeCardClickHandler(enemy_player)}
+				rotate={this.props.rotate} />
 			<MyField
 				height={this.props.height}
 				cards={this.props.field[this.props.player]}

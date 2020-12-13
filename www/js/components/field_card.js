@@ -10,7 +10,8 @@ const FieldCard = function(props) {
 			scale={((300/3000) * props.height)/500}
 			onClick={props.onClick}
 			selected={props.selected}
-			displayHealth={props.displayHealth} />
+			displayHealth={props.displayHealth}
+			rotate={props.rotate} />
 	</div>;
 };
 

@@ -20,3 +20,14 @@ body {
 	color: white;
 	background-color: black;
 }
+
+b {
+	color: #999;
+	text-decoration: underline;
+}
+
+.panel {
+	border-radius: 5px;
+	border: 2px solid white;
+	background-color: #222;
+}
