@@ -28,7 +28,10 @@ public:
 private:
 	std::tuple<PlayerSide, Player&> getCurrentPlayer();
 	bool checkRequirements(CardRequirements reqs);
-	void onPhaseBegin();
-	void payCost(int n);
+	// returns true if the game is over
+	bool onPhaseBegin();
+	bool payCost(int n);
 	SerializedGame serializeForPlayer(PlayerSide player, std::string method, json_t* extras);
+	void playerWon(PlayerSide winner);
+	void playerLost(PlayerSide winner);
 };

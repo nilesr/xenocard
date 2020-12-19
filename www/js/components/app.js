@@ -138,7 +138,9 @@ class App extends React.Component {
 		}
 		this.setState({animationInProgress: true}, () => {
 			const msg = this.state.nextStates[0];
-			if (msg.event == "draw_card") {
+			if (msg.event == "game_over") {
+				alert(msg.extras.winner + " wins!");
+			} else if (msg.event == "draw_card") {
 				animate_draw(msg, this.completeEvent.bind(this));
 			} else {
 				this.completeEvent()

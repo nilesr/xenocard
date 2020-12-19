@@ -134,7 +134,10 @@ void doBattle(Game& game, Player& attacker, Player& enemy, PlayerField& attacker
 				auto damage = card.card->getDamageFor(std::nullopt);
 				std::cout << "Will hit deck for: " << damage << std::endl;
 
-				enemy.payCost(damage);
+				auto dead = enemy.payCost(damage);
+				if (dead) {
+					return;
+				}
 
 				game.notify("damage_deck", json_pack("{s:o, s:s, s:i}",
 					"source", serializePosition(source_position),

@@ -45,6 +45,8 @@ int main() {
 
 			Game g{p1, p2, random};
 			g.run();
+			close(p1fd);
+			close(p2fd);
 			return 0;
 		}
 		close(p1fd);

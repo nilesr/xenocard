@@ -37,10 +37,17 @@ void Player::drawCard() {
 	this->deck.pop_back();
 }
 
-void Player::payCost(int n) {
-	this->lost.insert(this->lost.end(), this->deck.rbegin(), this->deck.rbegin() + n);
+bool Player::payCost(int n) {
 	for (int i = 0; i < n; i++) {
-		// TODO check if the deck is empty
+		if (this->deck.size() == 0) {
+			return true;
+		}
+		this->lost.push_back(*this->deck.rbegin());
 		this->deck.pop_back();
 	}
+	return false;
+}
+
+bool Player::isDead() {
+	return this->deck.size() == 0;
 }

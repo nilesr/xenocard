@@ -40,5 +40,7 @@ public:
 	void dealInitialHand();
 	void sendState(SerializedGame game);
 	void drawCard();
-	void payCost(int i);
+	// returns true if the player has lost as a result of discarding these cards
+	[[nodiscard("may end the game")]] bool payCost(int i);
+	bool isDead();
 };

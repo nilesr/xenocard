@@ -33,7 +33,7 @@ bool Game::checkRequirements(CardRequirements reqs) {
 }
 
 
-void Game::onPhaseBegin() {
+bool Game::onPhaseBegin() {
 	auto [current_player, plr] = this->getCurrentPlayer();
 	if (this->phase == Phase::P1_DRAW) {
 		this->turn++;
@@ -42,6 +42,10 @@ void Game::onPhaseBegin() {
 	if (this->phase == Phase::P1_DRAW || this->phase == Phase::P2_DRAW) {
 		plr.drawCard();
 		this->notify("draw_card", json_pack("{s:s}", "side", playerSideToString(current_player).c_str()));
+		if (plr.isDead()) {
+			this->playerLost(current_player);
+			return true;
+		}
 	}
 	if (this->phase == Phase::P1_BATTLE || this->phase == Phase::P2_BATTLE) {
 		for (int i = 0; i < 4; i++) {
@@ -55,13 +59,30 @@ void Game::onPhaseBegin() {
 		auto& field = current_player == PlayerSide::P1 ? this->field.p1 : this->field.p2;
 		auto& enemy_field = current_player == PlayerSide::P1 ? this->field.p2 : this->field.p1;
 		doBattle(*this, plr, other_player, field, enemy_field);
+		if (other_player.isDead()) {
+			this->playerWon(current_player);
+			return true;
+		}
 	}
+	return false;
 }
 
-void Game::payCost(int n) {
+bool Game::payCost(int n) {
 	auto [current_player, plr] = this->getCurrentPlayer();
-	plr.payCost(n);
+	auto dead = plr.payCost(n);
 	this->notify("pay_cost", json_pack("{s:s, s:i}", "side", playerSideToString(current_player).c_str(), "n", n));
+	if (dead) {
+		this->playerLost(current_player);
+	}
+	return dead;
+}
+
+void Game::playerLost(PlayerSide winner) {
+	this->playerWon(winner == PlayerSide::P1 ? PlayerSide::P2 : PlayerSide::P1);
+}
+
+void Game::playerWon(PlayerSide winner) {
+	this->notify("game_over", json_pack("{s:s}", "winner", playerSideToString(winner).c_str()));
 }
 
 std::tuple<PlayerSide, Player&> Game::getCurrentPlayer() {
@@ -117,7 +138,10 @@ void Game::run() {
 					}
 					has_played_battle_card = false;
 					has_played_situation_card = false;
-					this->onPhaseBegin();
+					const auto game_over = this->onPhaseBegin();
+					if (game_over) {
+						return;
+					}
 					break;
 				} else {
 					plr.sendError("You cannot set that phase right now");
@@ -178,7 +202,10 @@ void Game::run() {
 					}
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_card->weapon = to_play_weapon;
-					this->payCost(target_card->getCost());
+					const auto game_over = this->payCost(target_card->getCost());
+					if (game_over) {
+						return;
+					}
 					break;
 				}
 				if (to_play->getType() == CardType::BATTLE) {
@@ -206,7 +233,10 @@ void Game::run() {
 					if (to_play_battle->countsTowardsLimit()) {
 						has_played_battle_card = true;
 					}
-					this->payCost(to_play->getCost());
+					const auto game_over = this->payCost(to_play->getCost());
+					if (game_over) {
+						return;
+					}
 					break;
 				}
 				if (to_play->getType() == CardType::SITUATION) {
@@ -230,7 +260,10 @@ void Game::run() {
 					plr.hand.erase(plr.hand.begin() + pi->handIndex);
 					target_slot = to_play;
 					has_played_situation_card = true;
-					this->payCost(to_play->getCost());
+					const auto game_over = this->payCost(to_play->getCost());
+					if (game_over) {
+						return;
+					}
 					break;
 				}
 			}
