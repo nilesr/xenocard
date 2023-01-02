@@ -1,4 +1,4 @@
-CPPFLAGS=-g -std=gnu++17 -Ivendor/jansson/include -Wall -Wextra -Wno-unused-parameter
+CPPFLAGS=-g -std=gnu++20 -Ivendor/jansson/include -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-g
 LDLIBS=-Lvendor/jansson/lib -ljansson
 
@@ -9,11 +9,11 @@ OBJS=$(subst .cpp,.o,$(SRCS))
 ROOT_DIR=$(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # Check for newest version here: https://digip.org/jansson/ (Releases section)
-JANSSON_VERSION=2.13.1
+JANSSON_VERSION=2.14
 # Check for newest version here: http://websocketd.com/#download
 WEBSOCKETD_VERSION=0.3.0
 # Check for newest version here: https://nmap.org/download.html
-NMAP_VERSION=7.91
+NMAP_VERSION=7.93
 
 all: server
 
@@ -59,6 +59,6 @@ clean:
 distclean: clean
 	rm -rf vendor
 
-.PHONY: clean all depend
+.PHONY: clean all depend distclean
 
 -include .depend

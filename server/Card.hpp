@@ -5,6 +5,7 @@
 #include <optional>
 #include <jansson.h>
 #include <vector>
+#include <array>
 
 enum class CardType {
 	BATTLE,

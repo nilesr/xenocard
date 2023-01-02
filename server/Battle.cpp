@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
+#include <unordered_map>
 
 
 struct BattleEligibleCard {
@@ -110,7 +111,7 @@ void doBattle(Game& game, Player& attacker, Player& enemy, PlayerField& attacker
 		int i = 0;
 		while (true) {
 			auto opponents = findOpponents(card, enemyField);
-			for (const auto opp_card : opponents.cards) {
+			for (const auto& opp_card : opponents.cards) {
 				if (i == 0) {
 					damage = card.card->getDamageFor(opp_card.card);
 				}
